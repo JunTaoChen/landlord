@@ -109,7 +109,7 @@ export default {
     }
   },
   mounted() {
-    this.changePage(1);
+    // this.changePage(1);
   },
 };
 </script>

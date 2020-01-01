@@ -33,6 +33,8 @@
         overflow: hidden;
         text-align: center;
         cursor: pointer;
+        background: url('../assets/logo.png') 20px center no-repeat;
+        background-size: auto 100%;
     }
     .menu-icon{
         transition: all .3s;
@@ -82,12 +84,11 @@
        display: none;
    }
    .collapsed-menu .layout-logo{
-       transition: width .2s ease;
+       transition: all .2s ease;
        width: 35px;
-       &:before{
-            width: 35px;
-            background-size: 108px auto;
-        }
+       text-indent: -1000px;
+       background-position: center;
+       background-size: 100% auto;
    }
    .user-menu-con{
        position: absolute;
@@ -107,23 +108,32 @@
 <template>
     <div class="layout">
         <Layout>
-            <!-- <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" width="240"  breakpoint="md">
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" width="240"  breakpoint="md">
                 <Menu ref="menu" :active-name="$route.name" theme="dark"  :class="menuitemClasses"  :open-names="openName" >
                     <div class="layout-logo" @click="$router.push({path:'/'})">东客管理后台</div>
-                    <MenuItem v-for="(item,index) in menu" :key="index" :name="item.name" :to="{name:item.name}">
-                             <Icon :type="item.icon" class="menu-icon"></Icon><span class="title">{{item.title}}</span> 
+                    <div v-for="(item,index) in menu" :key="index">
+                        <Submenu v-if="item.children" :name="item.name">
+                            <template slot="title">
+                                <Icon :type="item.icon" class="menu-icon" />
+                                <span class="title">{{item.title}}</span> 
+                            </template>
+                            <MenuItem v-for="(child,childIndex) in item.children" :key="index+'_'+childIndex" :name="child.name" :to="{name:child.name}" >
+                                {{child.title}}
+                            </MenuItem>
+                        </Submenu>
+                        <MenuItem :name="item.name" :to="{name:item.name}" v-else>
+                            <Icon :type="item.icon" class="menu-icon"></Icon><span class="title">{{item.title}}</span> 
                         </MenuItem>
+                    </div>
                 </Menu>
-            </Sider> -->
+            </Sider>
             <Layout>
                 <Header :style="{padding: 0}" class="layout-header-bar">
                     
-                    <!-- <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24"></Icon> -->
+                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24"></Icon>
                     <!-- <div class="user-menu-con">
                         <span class="name">{{name}}</span>&nbsp;&nbsp;<Button type="text" @click="logout">退出</Button>
                     </div> -->
-                    <!-- <Button type="text" size="large" to="/dashboard" target="_blank">大屏数据可视化</Button> -->
-                    <div class="layout-logo" @click="$router.push({path:'/'})" style="float:left;color:#333;margin:15px 0 0 20px; ">东客管理后台</div>
                     <Menu mode="horizontal" active-name="1" style="float:right;height:63px;line-height:64px;" @on-select="onChangeZones">
                         <Submenu name="user">
                             <template slot="title">

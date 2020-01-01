@@ -6,14 +6,18 @@ export const routes  =  [
   {
     path: '/',
     component: (resolve) => require(['./layout/baseLayout.vue'], resolve),
-    redirect: "account",
+    redirect: "building",
     children: [
       { path: 'index',  name: 'index', component: resolve => { require(['./views/index.vue'], resolve); } },
-      { path: 'account',  name: 'account', component: resolve => { require(['./views/account.vue'], resolve); } },
-      { path: 'houseman',  name: 'houseman', component: resolve => { require(['./views/houseman.vue'], resolve); } },
-      { path: 'tenant',  name: 'tenant', component: resolve => { require(['./views/tenant.vue'], resolve); } },
+      { path: 'landlord',  name: 'landlord', component: resolve => { require(['./views/account/landlord.vue'], resolve); } },
+      { path: 'houseman',  name: 'houseman', component: resolve => { require(['./views/account/houseman.vue'], resolve); } },
+      { path: 'tenant',  name: 'tenant', component: resolve => { require(['./views/account/tenant.vue'], resolve); } },
       { path: 'building',  name: 'building', component: resolve => { require(['./views/building.vue'], resolve); } },
-      { path: 'bill',  name: 'bill', component: resolve => { require(['./views/bill.vue'], resolve); } },
+      { path: 'add_bill',  name: 'addBill', component: resolve => { require(['./views/bill/add.vue'], resolve); } },
+      { path: 'bill_list',  name: 'billList', component: resolve => { require(['./views/bill/list.vue'], resolve); } },
+      { path: 'contract_add',  name: 'contractAdd', component: resolve => { require(['./views/contract/add.vue'], resolve); } },
+      { path: 'contract_update',  name: 'contractUpdate', component: resolve => { require(['./views/contract/update.vue'], resolve); } },
+      { path: 'contract_print',  name: 'contractPrint', component: resolve => { require(['./views/contract/print.vue'], resolve); } },
     ],
   },
   
