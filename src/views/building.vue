@@ -1,33 +1,50 @@
 <template>
   <div>
-    <!-- <search-card>
-      <Form :label-width="100" class="block" @submit.native.prevent>
-        <FormItem label="地址：">
+    <div>
+      <Row class="info-card"  :gutter="20">
+        <Col :span="12">
+          <Card :padding="0" shadow>
+            <div class="left" style="background:#ff9900">
+              <Icon type="ios-log-in"/>
+            </div>
+            <div class="right">
+              <ICountUp :startVal="0" :endVal="1000"/>
+              <p>已出租</p>
+            </div>
+          </Card>
+        </Col>
+        <Col :span="12">
+          <Card :padding="0" shadow>
+            <div class="left" style="background:#2d8cf0">
+              <Icon type="ios-log-out"/>
+            </div>
+            <div class="right">
+              <ICountUp :startVal="0" :endVal="1000"/>
+              <p>未出租</p>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+    <Divider />
+    <search-card>
+      <Form :label-width="150" class="block" @submit.native.prevent>
+        <FormItem label="地址、姓名或手机号：">
           <Input
             v-model="searchData.address"
-            placeholder="请输入地址"
+            placeholder="请输入房源地址、房东姓名或者手机号码"
             class="common-input"
             search
-            enter-button="查找"
-            @on-search="search"
-          />
-        </FormItem>
-        <FormItem label="楼名：">
-          <Input
-            v-model="searchData.name"
-            placeholder="请输入楼名"
-            class="common-input"
-            search
-            enter-button="查找"
+            enter-button="搜索"
             @on-search="search"
           />
         </FormItem>
       </Form>
     </search-card>
-    <Divider /> -->
+    <Divider />
     <Card shadow>
       <h4 slot="title">
-        房源列表
+        房源列表 
         <!-- <Button type="primary" icon="md-add" @click="openAddedModal">新增</Button> -->
       </h4>
       <v-table
@@ -37,10 +54,14 @@
         :current.sync="curPage"
         :pageSize.sync="pageSize"
       >
-        <div key="name" title="楼名"></div>
-        <div key="address" title="详细地址"></div>
-        <!-- <div key="card" title="楼层数量"></div>
-        <div key="card" title="单层房源数量"></div> -->
+        <div key="name" title="房源地址"></div>
+        <div key="card" title="出租房间数量"></div>
+        <div key="card" title="房东姓名"></div>
+        <div key="address" title="身份证号码">
+          <div slot-scope="scope">
+            <id-tip :id="scope.address"></id-tip>
+          </div>
+        </div>
         <div title="操作">
           <div slot-scope="scope">
             <!-- <Button type="warning" size="small" @click="edit(scope)" >编辑</Button>
@@ -119,9 +140,13 @@
 <script>
 import util from "@/util";
 import tableMixin from "@/mixin/table.js";
+import ICountUp from "vue-countup-v2";
 let roomIndex;
 export default {
   mixins: [tableMixin],
+  components: {
+    ICountUp,
+  },
   data() {
     return {
       url:"admin/landlord/houses",
@@ -206,7 +231,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .room {
   display: inline-block;
   width: 60px;

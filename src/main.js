@@ -27,6 +27,7 @@ router.afterEach(() => {
 });
 Vue.filter('formatTime',util.formatTime);
 Vue.filter('phoneFormat',util.phoneFormat);
+Vue.filter('idFormat',util.idFormat);
 
 const v = new Vue({
   router,

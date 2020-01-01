@@ -367,6 +367,14 @@ let phoneFormat = phone => {
 }
 util.phoneFormat = phoneFormat;
 
+const idFormat = id=>{
+    if (!id || id.length < 15) {
+        return id;
+    }
+    return id.substr(0, 6) + "*".repeat(8) + id.substr(14);
+}
+util.idFormat = idFormat;
+
 let canvasToBlob = canvas => {
     let encodeData = canvas.toDataURL('image/jpeg').split(',')[1];
     let decodedData = window.atob(encodeData);

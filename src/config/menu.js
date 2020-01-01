@@ -6,12 +6,12 @@ export const defaultMenu = [
     },
     {
         name: "contract",
-        title: "合同管理",
+        title: "租约管理",
         icon: "ios-person-outline",
         children:[
-            {name:"contractAdd",title:"新增合同"},
-            {name:"contractUpdate",title:"修改合同"},
-            {name:"contractPrint",title:"打印合同"},
+            {name:"contractAdd",title:"新增租约"},
+            {name:"contractUpdate",title:"修改租约"},
+            {name:"contractPrint",title:"打印租约"},
         ]
     },
     {

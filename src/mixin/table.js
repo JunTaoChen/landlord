@@ -1,8 +1,10 @@
 import vTable from "@/components/vTable.vue";
 import searchCard from "@/components/searchCard.vue";
+import idTip from "@/components/idTip.vue";
+import phoneTip from "@/components/phoneTip.vue";
 import util from "@/util";
 export default {
-    components: { vTable, searchCard },
+    components: { vTable, searchCard ,phoneTip,idTip},
     data() {
         return {
             curPage: 1,
