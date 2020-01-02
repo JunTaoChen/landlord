@@ -10,6 +10,7 @@ export const routes  =  [
     children: [
       { path: 'index',  name: 'index', component: resolve => { require(['./views/index.vue'], resolve); } },
       { path: 'landlord',  name: 'landlord', component: resolve => { require(['./views/account/landlord.vue'], resolve); } },
+      { path: 'rooms',  name: 'rooms', component: resolve => { require(['./views/rooms.vue'], resolve); } },
       { path: 'houseman',  name: 'houseman', component: resolve => { require(['./views/account/houseman.vue'], resolve); } },
       { path: 'tenant',  name: 'tenant', component: resolve => { require(['./views/account/tenant.vue'], resolve); } },
       { path: 'building',  name: 'building', component: resolve => { require(['./views/building.vue'], resolve); } },
