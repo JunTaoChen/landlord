@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import cAdd from './views/contract/add.vue'
+
+const cUpdate = {extends:cAdd}
+const cPrint = {extends:cAdd}
 
 Vue.use(Router)
 export const routes  =  [
@@ -16,9 +20,9 @@ export const routes  =  [
       { path: 'building',  name: 'building', component: resolve => { require(['./views/building.vue'], resolve); } },
       { path: 'add_bill',  name: 'addBill', component: resolve => { require(['./views/bill/add.vue'], resolve); } },
       { path: 'bill_list',  name: 'billList', component: resolve => { require(['./views/bill/list.vue'], resolve); } },
-      { path: 'contract_add',  name: 'contractAdd', component: resolve => { require(['./views/contract/add.vue'], resolve); } },
-      { path: 'contract_update',  name: 'contractUpdate', component: resolve => { require(['./views/contract/update.vue'], resolve); } },
-      { path: 'contract_print',  name: 'contractPrint', component: resolve => { require(['./views/contract/print.vue'], resolve); } },
+      { path: 'contract_add',  name: 'contractAdd', component: cAdd },
+      { path: 'contract_update',  name: 'contractUpdate', component: cUpdate },
+      { path: 'contract_print',  name: 'contractPrint', component: cPrint },
     ],
   },
   
@@ -32,10 +36,6 @@ export const routes  =  [
     component: (resolve) => require(['./views/404.vue'], resolve)
   }
 ];
-const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
 export default new Router({
   base: process.env.BASE_URL,
   routes

@@ -77,12 +77,12 @@
       <Form ref="form" :model="modal.data" :rules="modal.rules" :label-width="100">
         <Row>
           <FormItem prop="name" label="姓名：">
-            <Input v-model="modal.data.name" placeholder="请输入详细地址" />
+            <Input v-model="modal.data.name" placeholder="请输入姓名" />
           </FormItem>
         </Row>
         <Row>
           <FormItem prop="phone" label="手机号：">
-            <Input v-model="modal.data.phone" placeholder="请输入楼名" />
+            <Input v-model="modal.data.phone" placeholder="请输入手机号" />
           </FormItem>
         </Row>
       </Form>
