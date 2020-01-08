@@ -88,7 +88,7 @@
       </Form>
       <div slot="footer">
         <Button type="text" size="large" @click="modal.visible=false">取消</Button>
-        <Button @click="next" type="primary">确定</Button>
+        <Button @click="confirm" type="primary">确定</Button>
       </div>
     </Modal>
   </div>

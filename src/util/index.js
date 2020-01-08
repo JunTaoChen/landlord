@@ -416,4 +416,9 @@ function prefixInteger(num, n) {
     return (Array(n).join(0) + num).slice(-n);
 }
 util.prefixInteger = prefixInteger;
+
+function isEmpty(obj){
+	return (typeof obj === 'undefined' || obj === null || obj === "");
+}
+util.isEmpty = isEmpty;
 export default util;
