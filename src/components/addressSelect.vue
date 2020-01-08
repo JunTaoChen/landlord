@@ -20,6 +20,9 @@ export default {
       val:"",
     };
   },
+  mounted(){
+    this.val = this.value;
+  },
   watch:{
       value(value){
           this.val = value;

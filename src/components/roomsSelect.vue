@@ -37,7 +37,9 @@ export default {
       }
   },
   mounted(){
-      this.getRooms();
+    this.val = this.value;
+    this.getRooms();
+    
   },
   watch:{
       value(value){

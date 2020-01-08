@@ -6,7 +6,7 @@
           <address-select v-model="searchData.aid"></address-select>
         </FormItem>
         <FormItem label="日期：">
-          <DatePicker type="month" v-model="searchData.date"></DatePicker>
+          <DatePicker type="month" v-model="searchData.date" :clearable="false"></DatePicker>
         </FormItem>
         <FormItem>
           <Button type="success" size="large">确定</Button>

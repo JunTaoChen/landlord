@@ -43,6 +43,8 @@ export default {
     },
     methods:{
         handleSubmit() {
+            this.$router.push("building");
+            return;
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     const {username,password} = this.form;

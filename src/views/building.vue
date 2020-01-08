@@ -1,14 +1,14 @@
 <template>
   <div>
     <div>
-      <Row class="info-card"  :gutter="20">
+      <Row class="info-card" :gutter="20">
         <Col :span="12">
           <Card :padding="0" shadow>
             <div class="left" style="background:#ff9900">
-              <Icon type="ios-log-in"/>
+              <Icon type="ios-log-in" />
             </div>
             <div class="right">
-              <ICountUp :startVal="0" :endVal="1000"/>
+              <ICountUp :startVal="0" :endVal="1000" />
               <p>已出租</p>
             </div>
           </Card>
@@ -16,10 +16,10 @@
         <Col :span="12">
           <Card :padding="0" shadow>
             <div class="left" style="background:#2d8cf0">
-              <Icon type="ios-log-out"/>
+              <Icon type="ios-log-out" />
             </div>
             <div class="right">
-              <ICountUp :startVal="0" :endVal="1000"/>
+              <ICountUp :startVal="0" :endVal="1000" />
               <p>未出租</p>
             </div>
           </Card>
@@ -44,7 +44,7 @@
     <Divider />
     <Card shadow>
       <h4 slot="title">
-        房源列表 
+        房源列表
         <!-- <Button type="primary" icon="md-add" @click="openAddedModal">新增</Button> -->
       </h4>
       <v-table
@@ -54,26 +54,31 @@
         :current.sync="curPage"
         :pageSize.sync="pageSize"
       >
-        <div key="name" title="房源地址"></div>
-        <div key="card" title="出租房间数量"></div>
-        <div key="card" title="房东姓名"></div>
-        <div key="card" title="联系人"></div>
-        <div key="address" title="身份证号码">
+        <div key="addr" title="房源地址"></div>
+        <div key="num" title="出租房间数量"></div>
+        <div key="name" title="房东姓名"></div>
+        <div key="phone" title="手机号码">
           <div slot-scope="scope">
-            <id-tip :id="scope.address"></id-tip>
+            <phone-tip :phone="scope.phone"></phone-tip>
           </div>
         </div>
-        <div title="操作">
+        <div key="card" title="身份证号码">
+          <div slot-scope="scope">
+            <id-tip :id="scope.card"></id-tip>
+          </div>
+        </div>
+        <div key="cont" title="联系人"></div>
+        <div title="操作" :width="250">
           <div slot-scope="scope">
             <!-- <Button type="warning" size="small" @click="edit(scope)" >编辑</Button>
-            <Button type="error" size="small" @click="del(scope)">删除</Button> -->
-            <Button type="warning" size="small" @click="viewHouse(scope)" >查看楼层房屋</Button>
-            <Button type="info" size="small" @click="edit(scope)" >编辑联系人</Button>
+            <Button type="error" size="small" @click="del(scope)">删除</Button>-->
+            <Button type="warning" size="small" @click="viewHouse(scope)">查看楼层房屋</Button>
+            <Button type="info" size="small" @click="edit(scope)">编辑联系人</Button>
           </div>
         </div>
       </v-table>
     </Card>
-    <Modal v-model="modal.visible" title="修改招租联系人" width="500">
+    <Modal v-model="modal.visible" title="编辑联系人" width="500">
       <Form ref="form" :model="modal.data" :rules="modal.rules" :label-width="100">
         <Row>
           <FormItem prop="name" label="姓名：">
@@ -101,48 +106,56 @@ let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
-    ICountUp,
+    ICountUp
   },
   data() {
     return {
-      url:"admin/landlord/houses",
+      url: "admin/landlord/houses",
       searchData: {
         name: ""
       },
+      data: [
+        {
+          name: "张鑫",
+          num: "1",
+          card: "450203198605050730",
+          addr: "福田区下沙村8坊70号",
+          phone: "18888888888",
+          cont: "张琪(189999999999)"
+        }
+      ],
       modal: {
-        visible: true,
+        visible: false,
         title: "",
         rules: {
-          name:util.getRequiredRule("姓名不能为空"),
-          phone:util.getRules().phone,
+          name: util.getRequiredRule("姓名不能为空"),
+          phone: util.getRules().phone
         },
         data: {
           phone: "",
-          name: "",
+          name: ""
         }
-      },
+      }
     };
   },
   methods: {
-    openAddedModal() {
-      this.modal.title = "新增房源";
-      this.showModal();
-    },
-    showModal() {
-      this.modal.visible = true;
-    },
     confirm() {
-      this.$refs.form.validate(valid=>{
-        if(valid){
-
+      this.$refs.form.validate(valid => {
+        if (valid) {
         }
       });
     },
+    viewHouse(){
+      this.$router.push({name:"rooms"})
+    },
+    edit(){
+      this.modal.visible = true;
+    }
   },
-  activated(){
-    const {id} = this.$route.query;
-    if(id){
-      this.queryTerms = {landlordId:id};
+  activated() {
+    const { id } = this.$route.query;
+    if (id) {
+      this.queryTerms = { landlordId: id };
       this.changePage(1);
     }
   }
@@ -161,7 +174,7 @@ export default {
   border-radius: 5px;
   margin: 0 15px 0 0;
   position: relative;
-   cursor: pointer;
+  cursor: pointer;
 }
 .room .close {
   position: absolute;
