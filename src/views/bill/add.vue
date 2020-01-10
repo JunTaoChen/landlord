@@ -8,9 +8,6 @@
         <FormItem label="日期：">
           <DatePicker type="month" v-model="searchData.date" :clearable="false"></DatePicker>
         </FormItem>
-        <FormItem>
-          <Button type="success" size="large">确定</Button>
-        </FormItem>
       </Form>
     </search-card>
     <Divider />

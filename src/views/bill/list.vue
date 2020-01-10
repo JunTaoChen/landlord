@@ -27,7 +27,7 @@
         <div key="num" title="剩余未填写数量"></div>
         <div key="name" title="房东姓名"></div>
         <div key="phone" title="手机号码">
-            <div slot-scope="scope">
+          <div slot-scope="scope">
             <phone-tip :phone="scope.phone"></phone-tip>
           </div>
         </div>
@@ -37,28 +37,25 @@
           </div>
         </div>
         <div key="cont" title="联系人"></div>
-        <div title="操作">
-          <div slot-scope="scope">
-            <Button type="info" size="small" @click="edit(scope)">查看账单</Button>
-          </div>
-        </div>
       </v-table>
     </Card>
   </div>
 </template>
 
 <script>
+import billTable from "@/components/billTable.vue";
 import util from "@/util";
 import tableMixin from "@/mixin/table.js";
 export default {
   mixins: [tableMixin],
+  components: { billTable },
   name: "build_list_bill",
   data() {
     return {
       searchData: {
         date: new Date(),
         status: 1
-      }
+      },
     };
   },
   mounted() {
@@ -68,11 +65,11 @@ export default {
         num: "1",
         card: "450203198605050730",
         addr: "福田区下沙村8坊70号",
-        phone:"18888888888",
-        cont:"张琪(189999999999)"
+        phone: "18888888888",
+        cont: "张琪(189999999999)"
       }
     ];
-  }
+  },
 };
 </script>
 

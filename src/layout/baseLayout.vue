@@ -272,7 +272,11 @@
                 });
             },
         },
-        mounted() {
+        created() {
+            const {meta} =  this.$route;
+            if(meta && meta.parent){
+                this.openName.push(meta.parent)
+            }
             // if(!localStorage.token){
             //     this.$router.push({ name: 'login' });
             // }

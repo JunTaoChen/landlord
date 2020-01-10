@@ -3,27 +3,39 @@
     <div key="id" title="房号"></div>
     <div title="总费用" :width="80">
       <div slot-scope="scope">
-          <span v-if="!isFirst">{{scope.p1+scope.p4*scope.p5+scope.p8*scope.p9}}</span>
-          <InputNumber :min="0" v-else v-model="scope.p10" ></InputNumber>
+        <span v-if="!isFirst">{{scope.p1+scope.p4*scope.p5+scope.p8*scope.p9}}</span>
+        <InputNumber :min="0" v-else v-model="scope.p10"></InputNumber>
       </div>
     </div>
     <div key="p1" title="租金"></div>
     <div title="上月电">
       <div slot-scope="scope">
-        <InputNumber :min="0"  v-model="scope.p2" @on-change="calculateElectricity(scope)"></InputNumber>
+        <InputNumber
+          :disabled="readonly&&!scope.isEdit"
+          :min="0"
+          v-model="scope.p2"
+          @on-change="calculateElectricity(scope)"
+        ></InputNumber>
       </div>
     </div>
     <div title="本月电">
       <div slot-scope="scope">
-        <InputNumber :min="0"  v-model="scope.p3" @on-change="calculateElectricity(scope)"></InputNumber>
+        <InputNumber
+          :disabled="readonly&&!scope.isEdit"
+          :min="0"
+          v-model="scope.p3"
+          @on-change="calculateElectricity(scope)"
+        ></InputNumber>
       </div>
     </div>
     <div title="实用电">
       <div slot-scope="scope">
-        <InputNumber :min="0" 
+        <InputNumber
+          :min="0"
           @on-change="verificationElectricity(scope)"
           :class="{'bg-warning':scope.electricityWarning}"
           v-model="scope.p4"
+          :disabled="readonly&&!scope.isEdit"
         ></InputNumber>
       </div>
     </div>
@@ -33,20 +45,32 @@
     </div>
     <div title="上月水">
       <div slot-scope="scope">
-        <InputNumber :min="0"  v-model="scope.p6" @on-change="calculateWaterFee(scope)"></InputNumber>
+        <InputNumber
+          :disabled="readonly&&!scope.isEdit"
+          :min="0"
+          v-model="scope.p6"
+          @on-change="calculateWaterFee(scope)"
+        ></InputNumber>
       </div>
     </div>
     <div title="本月水">
       <div slot-scope="scope">
-        <InputNumber :min="0"  v-model="scope.p7" @on-change="calculateWaterFee(scope)"></InputNumber>
+        <InputNumber
+          :disabled="readonly&&!scope.isEdit"
+          :min="0"
+          v-model="scope.p7"
+          @on-change="calculateWaterFee(scope)"
+        ></InputNumber>
       </div>
     </div>
     <div title="实用水">
       <div slot-scope="scope">
-        <InputNumber :min="0" 
+        <InputNumber
+          :min="0"
           @on-change="verificationWaterFee(scope)"
           :class="{'bg-warning':scope.waterFeeWarming}"
           v-model="scope.p8"
+          :disabled="readonly&&!scope.isEdit"
         ></InputNumber>
       </div>
     </div>
@@ -56,8 +80,10 @@
     </div>
     <div title="操作" :width="90">
       <div slot-scope="scope">
-        <Button type="info" size="small" @click="change(scope)" v-if="!isFirst">首月入住</Button>
+        <Button type="info" size="small" @click="change(scope)" v-if="!isFirst && !readonly">首月入住</Button>
         <Button type="primary" size="small" @click="change(scope)" v-if="isFirst">取消</Button>
+        <Button type="warning" size="small" @click="edit(scope)" v-if="readonly && !scope.isEdit">修改</Button>
+        <Button type="info" size="small" @click="save(scope)" v-if="readonly && scope.isEdit">保存</Button>
       </div>
     </div>
   </v-table>
@@ -72,7 +98,8 @@ export default {
   props: {
     data: {},
     loading: { default: false },
-    isFirst: { default: false }
+    isFirst: { default: false },
+    readonly: { default: false }
   },
   data() {
     return {};
@@ -123,9 +150,15 @@ export default {
     change(item) {
       this.$emit("change", item._index);
     },
-    update(item){
-        this.$emit("update",item)
+    update(item) {
+      this.$emit("update", item);
     },
+    edit(item){
+      this.$emit("edit", item);
+    },
+    save(item){
+      this.$emit("save", item);
+    }
   }
 };
 </script>
@@ -143,5 +176,16 @@ export default {
 }
 .first-stay {
   opacity: 0.5;
+}
+.bill-list .ivu-input-number-disabled{
+  background: transparent;
+  color: #515a6e;
+  border: none;
+  input{
+    color: #515a6e;
+    cursor: text;
+    background: transparent;
+    opacity: 1;
+  }
 }
 </style>

@@ -20,7 +20,8 @@ export const defaultMenu = [
         icon: "md-list",
         children:[
             {name:"addBill",title:"录入账单"},
-            {name:"billList",title:"账单列表"},
+            {name:"billList",title:"租金账单"},
+            {name:"bill",title:"账单明细表"},
         ]
     },
     {

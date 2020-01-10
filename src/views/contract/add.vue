@@ -235,7 +235,7 @@ export default {
   },
   methods:{
     print(){
-      window.open("landlord#/contract/print/123")
+      window.open("#/contract/print/123")
     }
   }
 };

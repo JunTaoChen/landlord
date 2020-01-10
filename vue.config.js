@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl:"/landlord/",
+  baseUrl:"",
   chainWebpack: config => {
     // remove the prefetch plugin
     config.plugins.delete('prefetch')
