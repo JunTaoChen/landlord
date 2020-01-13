@@ -7,7 +7,7 @@
             <Col span="8">101</Col>
         </Row>
         <Row>
-            <Col span="4" class="right">地址：</Col>
+            <Col span="4" class="right">姓名：</Col>
             <Col span="8">test</Col>
             <Col span="4" class="right">手机号：</Col>
             <Col span="8">188888888888</Col>
@@ -48,36 +48,28 @@
             <Col span="4" class="right">电表单价：</Col>
             <Col span="8">11</Col>
         </Row>
-        <Button v-show="isShowPrint" @click="print">打印</Button>
+        <print-button></print-button>
     </div>
 </template>
 
 <script>
+    import printButton from "@/components/printButton.vue";
     export default {
+         components:{
+            printButton
+        },
         name: '',
         data() {
             return {
-                isShowPrint:true,
+                data:{}
             }
         },
-        methods:{
-            print(){
-                this.isShowPrint = false;
-                this.$nextTick(()=>{
-                    window.print();
-                });
-                
-            }
+        created(){
+            const id = this.$route.params.id;
         }
     }
 </script>
 
 <style lang="less" scoped>
-    .print{
-        width: 210mm;
-        margin: 0 auto;
-        padding: 10mm 0 0;
-        font-size: 18px;
-    }
     .right{text-align: right}
 </style>

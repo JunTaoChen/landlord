@@ -5,7 +5,7 @@ import DC from "./DateCalculator";
 let util = {};
 
 
-const ajaxUrl = "http://118.190.38.28:8768/";
+const ajaxUrl = "http://118.190.38.28:8668/";
 util.platform = "";
 util.baseURL = ajaxUrl;
 
@@ -17,14 +17,7 @@ util.init = content => {
 util.ajax = axios.create({
     baseURL: ajaxUrl,
     timeout: 30000,
-    transformRequest: [function (data) {
-        let ret = ''
-        for (let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        return ret.replace(/&$/,"");
-    }],
-    headers:{ 'Content-Type': 'application/x-www-form-urlencoded' }
+    headers:{ 'Content-Type': 'application/json' }
 })
 let loading = document.createElement("div");
 loading.setAttribute("style", "position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0,0,0,0);z-index:1001;display:none;");

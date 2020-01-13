@@ -1,31 +1,6 @@
 <template>
   <div>
-    <div>
-      <Row class="info-card" :gutter="20">
-        <Col :span="12">
-          <Card :padding="0" shadow>
-            <div class="left" style="background:#ff9900">
-              <Icon type="ios-log-in" />
-            </div>
-            <div class="right">
-              <ICountUp :startVal="0" :endVal="1000" />
-              <p>已出租</p>
-            </div>
-          </Card>
-        </Col>
-        <Col :span="12">
-          <Card :padding="0" shadow>
-            <div class="left" style="background:#2d8cf0">
-              <Icon type="ios-log-out" />
-            </div>
-            <div class="right">
-              <ICountUp :startVal="0" :endVal="1000" />
-              <p>未出租</p>
-            </div>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+    <rental-statistics></rental-statistics>
     <Divider />
     <search-card>
       <Form :label-width="150" class="block" @submit.native.prevent>
@@ -53,18 +28,19 @@
         :total="total"
         :current.sync="curPage"
         :pageSize.sync="pageSize"
+        :showPage="true"
       >
-        <div key="addr" title="房源地址"></div>
+        <div key="address" title="房源地址"></div>
         <div key="num" title="出租房间数量"></div>
-        <div key="name" title="房东姓名"></div>
-        <div key="phone" title="手机号码">
+        <div key="landlordName" title="房东姓名"></div>
+        <div title="手机号码">
           <div slot-scope="scope">
-            <phone-tip :phone="scope.phone"></phone-tip>
+            <phone-tip :phone="scope.mobile"></phone-tip>
           </div>
         </div>
-        <div key="card" title="身份证号码">
+        <div title="身份证号码">
           <div slot-scope="scope">
-            <id-tip :id="scope.card"></id-tip>
+            <id-tip :id="scope.idCardNo"></id-tip>
           </div>
         </div>
         <div key="cont" title="联系人"></div>
@@ -101,18 +77,18 @@
 <script>
 import util from "@/util";
 import tableMixin from "@/mixin/table.js";
-import ICountUp from "vue-countup-v2";
+import rentalStatistics from "@/components/rentalStatistics";
 let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
-    ICountUp
+    rentalStatistics
   },
   data() {
     return {
-      url: "admin/landlord/houses",
+      url: "admin/building/page",
       searchData: {
-        name: ""
+        address: ""
       },
       data: [
         {
@@ -135,7 +111,7 @@ export default {
           phone: "",
           name: ""
         }
-      }
+      },
     };
   },
   methods: {
@@ -145,10 +121,10 @@ export default {
         }
       });
     },
-    viewHouse(){
-      this.$router.push({name:"rooms"})
+    viewHouse({id,address}) {
+      this.$router.push({ name: "rooms",query:{id,address} });
     },
-    edit(){
+    edit() {
       this.modal.visible = true;
     }
   },
@@ -158,6 +134,9 @@ export default {
       this.queryTerms = { landlordId: id };
       this.changePage(1);
     }
+  },
+  mounted() {
+    this.changePage(1);
   }
 };
 </script>

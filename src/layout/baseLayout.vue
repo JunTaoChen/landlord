@@ -262,11 +262,11 @@
                     onOk: () => {
                         // util.clearSession(false);
                         // let url = "logout";
-                        // util.ajax(url).then(r => {
-                        //     localStorage.removeItem("token");
-                        // });
-                        // this.$router.push({ name: "login" });
-                        location.href = "./#/login";
+                        util.ajax("/user/logout").then(r => {
+                            localStorage.removeItem("token");
+                        });
+                        this.$router.push({ name: "login" });
+                        // location.href = "./#/login";
                         // this.$store.commit("reset");
                     }
                 });
@@ -277,10 +277,12 @@
             if(meta && meta.parent){
                 this.openName.push(meta.parent)
             }
-            // if(!localStorage.token){
-            //     this.$router.push({ name: 'login' });
-            // }
             // this.name = localStorage.user;
         },
+        mounted(){
+            if(!localStorage.token){
+                this.$router.push({ name: 'login' });
+            }
+        }
     }
 </script>

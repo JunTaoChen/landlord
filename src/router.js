@@ -10,7 +10,7 @@ export const routes = [
   {
     path: '/',
     component: (resolve) => require(['./layout/baseLayout.vue'], resolve),
-    redirect: "login",
+    redirect: "building",
     children: [
       { path: 'index', name: 'index', component: resolve => { require(['./views/index.vue'], resolve); } },
       { path: 'landlord', name: 'landlord',meta:{parent:"account"}, component: resolve => { require(['./views/account/landlord.vue'], resolve); } },
@@ -27,6 +27,8 @@ export const routes = [
     ],
   },
   { path: '/contract/print/:id', name: 'cPrint', component: resolve => { require(['./views/contract/print.vue'], resolve); } },
+  { path: '/bill/print/:id', name: 'bPrint', component: resolve => { require(['./views/bill/print.vue'], resolve); } },
+  { path: '/bill/list/print/:id/:month', name: 'blPrint', component: resolve => { require(['./views/bill/list_print.vue'], resolve); } },
   {
     path: '/login',
     name: 'login',

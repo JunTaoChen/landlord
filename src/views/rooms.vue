@@ -1,40 +1,15 @@
 <template>
   <div>
-    <div>
-      <Row class="info-card"  :gutter="20">
-        <Col :span="12">
-          <Card :padding="0" shadow>
-            <div class="left" style="background:#ff9900">
-              <Icon type="ios-log-in"/>
-            </div>
-            <div class="right">
-              <ICountUp :startVal="0" :endVal="1000"/>
-              <p>已出租</p>
-            </div>
-          </Card>
-        </Col>
-        <Col :span="12">
-          <Card :padding="0" shadow>
-            <div class="left" style="background:#2d8cf0">
-              <Icon type="ios-log-out"/>
-            </div>
-            <div class="right">
-              <ICountUp :startVal="0" :endVal="1000"/>
-              <p>未出租</p>
-            </div>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+    <rental-statistics :id="queryTerms.buildingId"></rental-statistics>
     <Divider />
     <search-card>
       <Form :label-width="100" class="block" @submit.native.prevent>
         <FormItem label="地址：">
-            福田区下沙村8坊70号
+            {{address}}
         </FormItem>
         <FormItem label="状态：">
-           <RadioGroup v-model="searchData.name">
-                <Radio label="">全部</Radio>
+           <RadioGroup v-model="searchData.status" @on-change="search">
+                <Radio :label="0">全部</Radio>
                 <Radio :label="1">未出租</Radio>
                 <Radio :label="2">已出租</Radio>
             </RadioGroup>
@@ -94,44 +69,49 @@
 <script>
 import util from "@/util";
 import tableMixin from "@/mixin/table.js";
-import ICountUp from "vue-countup-v2";
+import rentalStatistics from "@/components/rentalStatistics";
 let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
-    ICountUp,
+    rentalStatistics,
   },
   data() {
     return {
-      url:"admin/landlord/houses",
+      url:"admin/room/list",
       searchData: {
-        name: ""
+        status: 0
       },
       modal:{
-          visible:true,
+          visible:false,
           data:{
               name:""
           },
           rules: {name:util.getRequiredRule("房间名称不能为空")},
-      }
+      },
+      address:"",
+      queryTerms:{
+        buildingId:"",
+      },
     };
   },
   methods: {
       toBill(data){
 
       },
-      edit(){
-
+      edit(item){
+        this.modal.visible = true;
       },
       comfirmRoom(){
 
       }
   },
   activated(){
-    const {id} = this.$route.query;
+    const {id,address} = this.$route.query;
     if(id){
-      this.queryTerms = {landlordId:id};
+      this.queryTerms.buildingId = id;
       this.changePage(1);
+      this.address = address;
     }
   }
 };

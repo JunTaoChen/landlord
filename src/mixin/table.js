@@ -12,10 +12,11 @@ export default {
             total: 0,
             data: [],
             url: "",
+            method:"POST",
             searchData: {},
             queryTerms: {},
             tableLoaing: false,
-            tempData: null
+            tempData: null,
         }
     },
     methods: {
@@ -27,8 +28,9 @@ export default {
             this.tableLoaing = true;
             util
                 .ajax(this.url, {
-                    params: Object.assign({ pageSize: this.pageSize, pageNumber: page }, this.queryTerms),
+                    data: Object.assign({ pageSize: this.pageSize, pageNumber: page }, this.queryTerms),
                     loading: false,
+                    method:this.method,
                 })
                 .then(({ code, data }) => {
                     this.tableLoaing = false;

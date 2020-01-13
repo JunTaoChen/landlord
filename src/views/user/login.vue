@@ -43,8 +43,8 @@ export default {
     },
     methods:{
         handleSubmit() {
-            this.$router.push("building");
-            return;
+            // this.$router.push("building");
+            // return;
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     const {username,password} = this.form;
@@ -57,8 +57,8 @@ export default {
                     let url = "user/login";
                     util.ajax.post(url, data).then(({code,data})=>{
                             if(code === 0){
-                                localStorage.token =  data.token;
-                               this.$router.push({ name: "account" });
+                               localStorage.token =  data.token;
+                               this.$router.push("building");
                             }else{
                                 // if(code === 1348 || code === 1345){
                                 //     this.imgToken = data;

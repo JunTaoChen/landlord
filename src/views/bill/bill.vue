@@ -13,7 +13,10 @@
     <Divider />
     <Card shadow>
       <h4 slot="title">账单列表</h4>
-      <div class="m-button"><Button type="success" @click="exportData">导出</Button>&nbsp;<Button type="primary" @click="print">打印</Button></div>
+      <div class="m-button">
+        <Button type="success" @click="exportData">导出</Button>&nbsp;
+        <Button type="primary" @click="print">打印</Button>
+      </div>
       <bill-table :data="data" @update="dataUpdata" :readonly="true" @edit="edit" @save="save"></bill-table>
     </Card>
   </div>
@@ -51,8 +54,8 @@ export default {
           p13: 13,
           electricityWarning: false,
           waterFeeWarming: false,
-          isSave:true,
-          isEdit:false,
+          isSave: true,
+          isEdit: false
         },
         {
           id: "102",
@@ -71,9 +74,9 @@ export default {
           p13: 13,
           electricityWarning: false,
           waterFeeWarming: false,
-          isSave:true,
-          isEdit:false,
-        },
+          isSave: true,
+          isEdit: false
+        }
       ],
       dataFirst: []
     };
@@ -84,20 +87,18 @@ export default {
     }
   },
   methods: {
-    dataUpdata(item){
+    dataUpdata(item) {
       const index = item._index;
-      this.data[index] = {...item,isSave:false};
+      this.data[index] = { ...item, isSave: false };
     },
-    exportData(){
-
+    exportData() {},
+    print() {
+      window.open("#/bill/list/print/123/2020-01")
     },
-    print(){
-
-    },
-    edit(item){
+    edit(item) {
       item.isEdit = true;
     },
-    save(item){
+    save(item) {
       item.isEdit = false;
     }
   }
@@ -105,7 +106,7 @@ export default {
 </script>
 
 <style lang="less" >
-.m-button{
+.m-button {
   text-align: right;
 }
 </style>

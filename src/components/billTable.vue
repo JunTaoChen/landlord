@@ -1,108 +1,132 @@
 <template>
-  <v-table ref="table" :table="{data:data,loading:loading}" class="bill-list">
-    <div key="id" title="房号"></div>
-    <div title="总费用" :width="80">
-      <div slot-scope="scope">
-        <span v-if="!isFirst">{{scope.p1+scope.p4*scope.p5+scope.p8*scope.p9}}</span>
-        <InputNumber :min="0" v-else v-model="scope.p10"></InputNumber>
+  <div>
+    <v-table ref="table" :table="{data:data,loading:loading,border:disableOperating}" class="bill-list">
+      <div key="id" title="房号"></div>
+      <div title="总费用" :width="80">
+        <div slot-scope="scope">
+          <span v-if="!isFirst">{{scope.p1+scope.p4*scope.p5+scope.p8*scope.p9}}</span>
+          <InputNumber :min="0" v-else v-model="scope.p10"></InputNumber>
+        </div>
       </div>
-    </div>
-    <div key="p1" title="租金"></div>
-    <div title="上月电">
-      <div slot-scope="scope">
-        <InputNumber
-          :disabled="readonly&&!scope.isEdit"
-          :min="0"
-          v-model="scope.p2"
-          @on-change="calculateElectricity(scope)"
-        ></InputNumber>
+      <div key="p1" title="租金"></div>
+      <div title="上月电">
+        <div slot-scope="scope">
+          <InputNumber
+            :disabled="readonly&&!scope.isEdit"
+            :min="0"
+            v-model="scope.p2"
+            @on-change="calculateElectricity(scope)"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-    <div title="本月电">
-      <div slot-scope="scope">
-        <InputNumber
-          :disabled="readonly&&!scope.isEdit"
-          :min="0"
-          v-model="scope.p3"
-          @on-change="calculateElectricity(scope)"
-        ></InputNumber>
+      <div title="本月电">
+        <div slot-scope="scope">
+          <InputNumber
+            :disabled="readonly&&!scope.isEdit"
+            :min="0"
+            v-model="scope.p3"
+            @on-change="calculateElectricity(scope)"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-    <div title="实用电">
-      <div slot-scope="scope">
-        <InputNumber
-          :min="0"
-          @on-change="verificationElectricity(scope)"
-          :class="{'bg-warning':scope.electricityWarning}"
-          v-model="scope.p4"
-          :disabled="readonly&&!scope.isEdit"
-        ></InputNumber>
+      <div title="实用电">
+        <div slot-scope="scope">
+          <InputNumber
+            :min="0"
+            @on-change="verificationElectricity(scope)"
+            :class="{'bg-warning':scope.electricityWarning}"
+            v-model="scope.p4"
+            :disabled="readonly&&!scope.isEdit"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-    <div key="p5" title="电单价"></div>
-    <div title="总电费">
-      <div slot-scope="scope">{{scope.p4*scope.p5}}</div>
-    </div>
-    <div title="上月水">
-      <div slot-scope="scope">
-        <InputNumber
-          :disabled="readonly&&!scope.isEdit"
-          :min="0"
-          v-model="scope.p6"
-          @on-change="calculateWaterFee(scope)"
-        ></InputNumber>
+      <div key="p5" title="电单价"></div>
+      <div title="总电费">
+        <div slot-scope="scope">{{scope.p4*scope.p5}}</div>
       </div>
-    </div>
-    <div title="本月水">
-      <div slot-scope="scope">
-        <InputNumber
-          :disabled="readonly&&!scope.isEdit"
-          :min="0"
-          v-model="scope.p7"
-          @on-change="calculateWaterFee(scope)"
-        ></InputNumber>
+      <div title="上月水">
+        <div slot-scope="scope">
+          <InputNumber
+            :disabled="readonly&&!scope.isEdit"
+            :min="0"
+            v-model="scope.p6"
+            @on-change="calculateWaterFee(scope)"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-    <div title="实用水">
-      <div slot-scope="scope">
-        <InputNumber
-          :min="0"
-          @on-change="verificationWaterFee(scope)"
-          :class="{'bg-warning':scope.waterFeeWarming}"
-          v-model="scope.p8"
-          :disabled="readonly&&!scope.isEdit"
-        ></InputNumber>
+      <div title="本月水">
+        <div slot-scope="scope">
+          <InputNumber
+            :disabled="readonly&&!scope.isEdit"
+            :min="0"
+            v-model="scope.p7"
+            @on-change="calculateWaterFee(scope)"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-    <div key="p9" title="电单价"></div>
-    <div title="总水费">
-      <div slot-scope="scope">{{scope.p8*scope.p9}}</div>
-    </div>
-    <div title="操作" :width="90">
-      <div slot-scope="scope">
-        <Button type="info" size="small" @click="change(scope)" v-if="!isFirst && !readonly">首月入住</Button>
-        <Button type="primary" size="small" @click="change(scope)" v-if="isFirst">取消</Button>
-        <Button type="warning" size="small" @click="edit(scope)" v-if="readonly && !scope.isEdit">修改</Button>
-        <Button type="info" size="small" @click="save(scope)" v-if="readonly && scope.isEdit">保存</Button>
+      <div title="实用水">
+        <div slot-scope="scope">
+          <InputNumber
+            :min="0"
+            @on-change="verificationWaterFee(scope)"
+            :class="{'bg-warning':scope.waterFeeWarming}"
+            v-model="scope.p8"
+            :disabled="readonly&&!scope.isEdit"
+          ></InputNumber>
+        </div>
       </div>
-    </div>
-  </v-table>
+      <div key="p9" title="电单价"></div>
+      <div title="总水费">
+        <div slot-scope="scope">{{scope.p8*scope.p9}}</div>
+      </div>
+      <div title="操作" v-if="!disableOperating" :width="readonly?130:90">
+        <div slot-scope="scope">
+          <Button type="info" size="small" @click="change(scope)" v-if="!isFirst && !readonly">首月入住</Button>
+
+          <Button type="primary" size="small" @click="change(scope)" v-if="isFirst">取消</Button>
+
+          <Button
+            type="warning"
+            size="small"
+            @click="edit(scope)"
+            v-if="readonly && !scope.isEdit"
+          >修改</Button>
+          <Button type="info" size="small" @click="save(scope)" v-if="readonly && scope.isEdit">保存</Button>
+          <Button type="info" size="small" @click="detail(scope)" v-if="readonly">详情</Button>
+        </div>
+      </div>
+    </v-table>
+    <Modal  v-model="modal.visible" title="账单详情" :width="660">
+      <bill-detail id="123"></bill-detail>
+      <div slot="footer">
+        <Button type="text" size="large" @click="modal.visible=false">取消</Button>
+        <Button @click="print" type="primary">打印</Button>
+      </div>
+    </Modal>
+  </div>
 </template>
 
 <script>
+import billDetail from "@/components/billDetail.vue";
 import vTable from "@/components/vTable.vue";
 import util from "@/util";
 export default {
-  components: { vTable },
+  components: { vTable,billDetail },
   name: "",
   props: {
     data: {},
     loading: { default: false },
     isFirst: { default: false },
-    readonly: { default: false }
+    readonly: { default: false },
+    disableOperating:{ default: false },
   },
   data() {
-    return {};
+    return {
+      modal:{
+        visible:false,
+        data:{}
+      }
+    };
   },
   methods: {
     calculateElectricity(item) {
@@ -153,11 +177,17 @@ export default {
     update(item) {
       this.$emit("update", item);
     },
-    edit(item){
+    edit(item) {
       this.$emit("edit", item);
     },
-    save(item){
+    save(item) {
       this.$emit("save", item);
+    },
+    detail(item) {
+      this.modal.visible=true;
+    },
+    print(){
+      window.open("#/bill/print/123")
     }
   }
 };
@@ -177,11 +207,11 @@ export default {
 .first-stay {
   opacity: 0.5;
 }
-.bill-list .ivu-input-number-disabled{
+.bill-list .ivu-input-number-disabled {
   background: transparent;
   color: #515a6e;
   border: none;
-  input{
+  input {
     color: #515a6e;
     cursor: text;
     background: transparent;
