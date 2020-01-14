@@ -6,7 +6,7 @@
       <Form :label-width="150" class="block" @submit.native.prevent>
         <FormItem label="地址、姓名或手机号：">
           <Input
-            v-model="searchData.address"
+            v-model="searchData.param"
             placeholder="请输入房源地址、房东姓名或者手机号码"
             class="common-input"
             search
@@ -31,7 +31,7 @@
         :showPage="true"
       >
         <div key="address" title="房源地址"></div>
-        <div key="num" title="出租房间数量"></div>
+        <div key="rentedRoomNum" title="出租房间数量"></div>
         <div key="landlordName" title="房东姓名"></div>
         <div title="手机号码">
           <div slot-scope="scope">
@@ -88,7 +88,7 @@ export default {
     return {
       url: "admin/building/page",
       searchData: {
-        address: ""
+        param: ""
       },
       data: [
         {

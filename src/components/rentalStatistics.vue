@@ -17,7 +17,7 @@
           <Icon type="ios-log-out" />
         </div>
         <div class="right">
-          <ICountUp :startVal="0" :endVal="unRentNum" />
+          <ICountUp :startVal="0" :endVal="unRentedNum" />
           <p>未出租</p>
         </div>
       </Card>
@@ -37,24 +37,23 @@ export default {
   data() {
     return {
       rentedNum: 0,
-      unRentNum: 0
+      unRentedNum: 0
     };
   },
   methods: {
     getData() {
       const id = this.id;
-      let url = "admin/building/page";
+      let url = "admin/building/summary";
       const data = { pageSize: 1 };
       if (id) {
-        url = "admin/room/list";
         data.buildingId = id;
       } else if (id == "") {
         return;
       }
-      util.ajax.post(url, data).then(({ code, data }) => {
+      util.ajax(url,{params:data}).then(({ code, data }) => {
         if (code == 0) {
           this.rentedNum = data.rentedNum;
-          this.unRentNum = data.unRentNum?data.unRentNum:data.unRentedNum;
+          this.unRentedNum = data.unRentedNum;
         }
       });
     }

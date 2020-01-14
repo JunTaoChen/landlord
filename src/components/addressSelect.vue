@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import rentalStatistics from "@/components/rentalStatistics";
 export default {
   props: {
     value: ""
@@ -22,6 +23,7 @@ export default {
   },
   mounted(){
     this.val = this.value;
+
   },
   watch:{
       value(value){
