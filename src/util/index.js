@@ -17,7 +17,9 @@ util.init = content => {
 util.ajax = axios.create({
     baseURL: ajaxUrl,
     timeout: 30000,
-    headers:{ 'Content-Type': 'application/json' }
+    headers: {
+        'Content-Type': 'application/json'
+    }
 })
 let loading = document.createElement("div");
 loading.setAttribute("style", "position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0,0,0,0);z-index:1001;display:none;");
@@ -92,13 +94,13 @@ util.ajax.interceptors.response.use(rep => {
     hideLoading();
     if (rep.headers['content-type'] === 'application/vnd.ms-excel') {
         return rep;
-    }else if (rep.data === "") {
+    } else if (rep.data === "") {
         vueContent.$Message.warning("数据返回有误");
     } else if (rep.data.code == 1024) {
         clearSession(true);
-        vueContent.$router.push({
-            name: 'login'
-        });
+        // vueContent.$router.push({
+        //     name: 'login'
+        // });
         warning();
     } else if (rep.data.code == 501) {
         vueContent.$Message.warning("暂无权限");
@@ -128,9 +130,7 @@ let rules = {
         message: "密码长度只能在6-16位之间",
         trigger: 'blur'
     }],
-    // name: getNameRule("", 10),
-    // projectName: getNameRule("小区", 15),
-    // code: [getRequiredRule("短信验证码不能为空"), { pattern: /^\d{4}$/, message: "短信验证码输入有误", trigger: 'blur' }],
+    idCardNum: [getRequiredRule("身份证号码不能为空"), getIDCardRule()],
     longitude: [getRequiredRule("经度不能为空"), {
         pattern: /^-?((0|1?[0-7]?[0-9]?)(([.][0-9]{1,6})?)|180(([.][0]{1,6})?))$/,
         message: "请输入正确格式的经度",
@@ -141,9 +141,6 @@ let rules = {
         message: "请输入正确格式的纬度",
         trigger: 'blur'
     }],
-    // projectContact: getNameRule("小区负责人", 20),
-    // projectContactPhone: getContactPhoneRule("负责人电话"),
-    // projectManagerPhone: getContactPhoneRule("管理处电话"),
 };
 util.getRules = function () {
     return {
@@ -360,7 +357,7 @@ let phoneFormat = phone => {
 }
 util.phoneFormat = phoneFormat;
 
-const idFormat = id=>{
+const idFormat = id => {
     if (!id || id.length < 15) {
         return id;
     }
@@ -410,8 +407,8 @@ function prefixInteger(num, n) {
 }
 util.prefixInteger = prefixInteger;
 
-function isEmpty(obj){
-	return (typeof obj === 'undefined' || obj === null || obj === "");
+function isEmpty(obj) {
+    return (typeof obj === 'undefined' || obj === null || obj === "");
 }
 util.isEmpty = isEmpty;
 export default util;

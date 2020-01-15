@@ -44,7 +44,7 @@ export default {
     getData() {
       const id = this.id;
       let url = "admin/building/summary";
-      const data = { pageSize: 1 };
+      const data = { };
       if (id) {
         data.buildingId = id;
       } else if (id == "") {
