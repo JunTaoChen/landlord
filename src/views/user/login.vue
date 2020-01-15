@@ -55,7 +55,7 @@ export default {
                     //     delete data.captcha;
                     // }
                     let url = "user/login";
-                    util.ajax.post(url, data).then(({code,data})=>{
+                    util.ajax(url, {method:"POST",params:data}).then(({code,data})=>{
                             if(code === 0){
                                localStorage.token =  data.token;
                                this.$router.push("building");

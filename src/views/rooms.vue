@@ -4,22 +4,19 @@
     <Divider />
     <search-card>
       <Form :label-width="100" class="block" @submit.native.prevent>
-        <FormItem label="地址：">
-            {{address}}
-        </FormItem>
+        <FormItem label="地址：">{{address}}</FormItem>
         <FormItem label="状态：">
-           <RadioGroup v-model="searchData.status" @on-change="search">
-                <Radio :label="0">全部</Radio>
-                <Radio :label="1">未出租</Radio>
-                <Radio :label="2">已出租</Radio>
-            </RadioGroup>
+          <RadioGroup v-model="searchData.status" @on-change="search">
+            <Radio :label="1">未出租</Radio>
+            <Radio :label="2">已出租</Radio>
+          </RadioGroup>
         </FormItem>
       </Form>
     </search-card>
     <Divider />
     <Card shadow>
       <h4 slot="title">
-        房屋列表 
+        房屋列表
         <!-- <Button type="primary" icon="md-add" @click="openAddedModal">新增</Button> -->
       </h4>
       <v-table
@@ -30,28 +27,28 @@
         :pageSize.sync="pageSize"
       >
         <div key="name" title="门牌号"></div>
-        <div key="card" title="户型"></div>
-        <div key="card" title="租客姓名"></div>
+        <div key="houseType" title="户型"></div>
+        <div key="tenantName" title="租客姓名"></div>
         <div title="手机号码">
           <div slot-scope="scope">
-            <phone-tip :id="scope.phone"></phone-tip>
+            <phone-tip :phone="scope.mobile"></phone-tip>
           </div>
         </div>
         <div title="身份证号码">
           <div slot-scope="scope">
-            <id-tip :id="scope.address"></id-tip>
+            <id-tip :id="scope.idCardNo"></id-tip>
           </div>
         </div>
-        <div key="card" title="租约日期"></div>
-        <div title="操作">
+        <div key="dueDate" title="租约日期"></div>
+        <div title="操作" :width="220">
           <div slot-scope="scope">
-            <Button type="warning" size="small" @click="edit(scope)" >编辑房间名</Button>
-            <Button type="info" size="small" @click="toBill(scope)" >查看租金账单</Button>
+            <Button type="warning" size="small" @click="edit(scope)">编辑房间名</Button>
+            <Button type="info" size="small" @click="toBill(scope)">查看租金账单</Button>
           </div>
         </div>
       </v-table>
     </Card>
-     <Modal v-model="modal.visible" title="修改房屋名称" width="320">
+    <Modal v-model="modal.visible" title="修改房屋名称" width="320">
       <Form ref="form" :model="modal.data" :rules="modal.rules" :label-width="100">
         <Row>
           <FormItem prop="name" label="房屋名称：">
@@ -74,43 +71,54 @@ let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
-    rentalStatistics,
+    rentalStatistics
   },
   data() {
     return {
-      url:"admin/room/list",
+      url: "admin/room/list",
       searchData: {
-        status: 0
+        status: 1,
+        buildingId: ""
       },
-      modal:{
-          visible:false,
-          data:{
-              name:""
-          },
-          rules: {name:util.getRequiredRule("房间名称不能为空")},
+      modal: {
+        visible: false,
+        data: {
+          id:"",
+          name: ""
+        },
+        rules: { name: util.getRequiredRule("房间名称不能为空") }
       },
-      address:"",
-      queryTerms:{
-        buildingId:"",
-      },
+      address: "",
+      queryTerms: {
+        buildingId: ""
+      }
     };
   },
   methods: {
-      toBill(data){
-
-      },
-      edit(item){
-        this.modal.visible = true;
-      },
-      comfirmRoom(){
-
-      }
+    toBill(data) {},
+    edit(item) {
+      this.modal.data.id = item.id;
+      this.modal.visible = true;
+    },
+    comfirmRoom() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          util.ajax.put("admin/room",this.modal.data).then(({code})=>{
+            if(code == 1){
+              this.$Message.success('修改成功');
+              this.modal.visible = false;
+              this.changePage();
+            }
+          })
+        }
+      });
+    }
   },
-  activated(){
-    const {id,address} = this.$route.query;
-    if(id){
-      this.queryTerms.buildingId = id;
-      this.changePage(1);
+  activated() {
+    const { id, address } = this.$route.query;
+    if (id) {
+      this.searchData.buildingId = id;
+      this.search();
       this.address = address;
     }
   }
