@@ -43,14 +43,15 @@ export default {
   methods: {
     getData() {
       const id = this.id;
-      let url = "admin/building/summary";
       const data = { };
-      if (id) {
+      if (id != undefined) {
         data.buildingId = id;
-      } else if (id == "") {
+      } else{
+        this.rentedNum = 0;
+        this.unRentedNum = 0;
         return;
       }
-      util.ajax(url,{params:data}).then(({ code, data }) => {
+      util.ajax("admin/building/summary",{params:data}).then(({ code, data }) => {
         if (code == 0) {
           this.rentedNum = data.rentedNum;
           this.unRentedNum = data.unRentedNum;

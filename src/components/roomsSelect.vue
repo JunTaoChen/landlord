@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import util from "@/util";
 export default {
   props: {
     value: "",
@@ -13,11 +14,7 @@ export default {
   name: "",
   data() {
     return {
-      data: [
-        { name: "101", id: "1" },
-        { name: "102", id: "2" },
-        { name: "103", id: "3" }
-      ],
+      data: [],
       val:"",
       disabled:false,
       placeholder:""
@@ -34,6 +31,15 @@ export default {
             this.disabled=false;
             this.placeholder = "请选择门牌号"; 
           }
+          util.ajax.get("admin/room/list",{params:{buildingId:this.aid}}).then(({code,data})=>{
+            if(code == 0){
+              this.data = data;
+              if(data.length==0){
+                this.$Message.warning("该房源暂无房屋");
+                this.disabled=true;
+              }
+            }
+          })
       }
   },
   mounted(){
@@ -46,7 +52,6 @@ export default {
           this.val = value;
       },
       val(value){
-          if(!value){return}
           this.$emit("input",value);
       },
       aid(){

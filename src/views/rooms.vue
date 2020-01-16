@@ -1,10 +1,12 @@
 <template>
   <div>
-    <rental-statistics :id="queryTerms.buildingId"></rental-statistics>
+    <rental-statistics :id="searchData.buildingId"></rental-statistics>
     <Divider />
     <search-card>
       <Form :label-width="100" class="block" @submit.native.prevent>
-        <FormItem label="地址：">{{address}}</FormItem>
+        <FormItem label="楼名：">
+          <address-select v-model="searchData.buildingId" @on-change="search"></address-select>
+        </FormItem>
         <FormItem label="状态：">
           <RadioGroup v-model="searchData.status" @on-change="search">
             <Radio :label="2">已出租</Radio>
@@ -68,18 +70,20 @@
 import util from "@/util";
 import tableMixin from "@/mixin/table.js";
 import rentalStatistics from "@/components/rentalStatistics";
+import addressSelect from "@/components/addressSelect.vue";
 let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
-    rentalStatistics
+    rentalStatistics,
+    addressSelect,
   },
   data() {
     return {
       url: "admin/room/list",
       searchData: {
         status: 2,
-        buildingId: ""
+        buildingId: null,
       },
       modal: {
         visible: false,
@@ -90,9 +94,6 @@ export default {
         rules: { name: util.getRequiredRule("房间名称不能为空") }
       },
       address: "",
-      queryTerms: {
-        buildingId: ""
-      }
     };
   },
   methods: {
@@ -119,10 +120,13 @@ export default {
   activated() {
     const { id, address } = this.$route.query;
     if (id) {
-      this.searchData.buildingId = id;
+      this.searchData.buildingId = parseInt(id);
       this.search();
-      this.address = address;
+    }else{
+      this.searchData.buildingId = null;
+      this.data = [];
     }
+    this.searchData.status = 2;
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <rental-statistics></rental-statistics>
+    <rental-statistics id></rental-statistics>
     <Divider />
     <search-card>
       <Form :label-width="150" class="block" @submit.native.prevent>
@@ -30,7 +30,7 @@
         :pageSize.sync="pageSize"
         :showPage="true"
       >
-        <div key="address" title="房源地址"></div>
+        <div key="name" title="楼名"></div>
         <div key="rentedRoomNum" title="出租房间数量"></div>
         <div key="landlordName" title="房东姓名"></div>
         <div title="手机号码">
@@ -43,6 +43,7 @@
             <id-tip :id="scope.idCardNo"></id-tip>
           </div>
         </div>
+        <div key="address" title="详细地址"></div>
         <div key="cont" title="联系人"></div>
         <div title="操作" :width="250">
           <div slot-scope="scope">
@@ -55,15 +56,26 @@
       </v-table>
     </Card>
     <Modal v-model="modal.visible" title="编辑联系人" width="500">
-      <Form ref="form" :model="modal.data" :rules="modal.rules" :label-width="100">
+      <Form ref="form" :model="modal.data" :rules="modal.rules" :label-width="150">
+        <Row>
+          <FormItem label="选择房管(可不选)：">
+            <Select placeholder="选择房管" :value="modal.manager" filterable @on-change="managersChange" clearable>
+              <Option
+                :key="item.id"
+                v-for="(item,index) in modal.managers"
+                :value="index"
+              >{{item.name}}</Option>
+            </Select>
+          </FormItem>
+        </Row>
         <Row>
           <FormItem prop="name" label="姓名：">
             <Input v-model="modal.data.name" placeholder="请输入姓名" />
           </FormItem>
         </Row>
         <Row>
-          <FormItem prop="phone" label="手机号：">
-            <Input v-model="modal.data.phone" placeholder="请输入手机号" />
+          <FormItem prop="mobile" label="手机号：">
+            <Input v-model="modal.data.mobile" placeholder="请输入手机号" />
           </FormItem>
         </Row>
       </Form>
@@ -96,27 +108,63 @@ export default {
         title: "",
         rules: {
           name: util.getRequiredRule("姓名不能为空"),
-          phone: util.getRules().phone
+          mobile: util.getRules().phone
         },
         data: {
-          phone: "",
-          name: ""
-        }
-      },
+          mobile: "",
+          name: "",
+          id: null
+        },
+        manager:null,
+        managers: []
+      }
     };
   },
   methods: {
     confirm() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          util.ajax
+            .put("/admin/contact", this.modal.data)
+            .then(({ code, data }) => {
+              if (code == 0) {
+                this.$Message.success("编辑成功");
+                this.modal.visible = false;
+                this.changePage(this.curPage);
+              }
+            });
         }
       });
     },
-    viewHouse({id,address}) {
-      this.$router.push({ name: "rooms",query:{id,address} });
+    viewHouse({ id }) {
+      this.$router.push({ name: "rooms", query: { id } });
     },
-    edit() {
+    edit(item) {
+      this.modal.data.mobile = "";
+      this.modal.data.name = "";
+      this.modal.manager = undefined;
+      // this.modal.managers = [];
+      this.modal.data.id = item.id;
+      util
+        .ajax("admin/building/managers", { params: { buildingId: item.id } })
+        .then(({ code, data }) => {
+          if (code == 0) {
+            if(data){
+              this.modal.managers = [data];
+            }
+          }
+        });
       this.modal.visible = true;
+    },
+    managersChange(index) {
+      if (index == undefined) {
+        this.modal.data.mobile = "";
+        this.modal.data.name = "";
+        return;
+      }
+      const { mobile, name } = this.modal.managers[index];
+      this.modal.data.mobile = mobile;
+      this.modal.data.name = name;
     }
   },
   activated() {

@@ -2,6 +2,11 @@ export const defaultMenu = [
     {
         name: "building",
         title: "首页",
+        icon: "md-home",
+    },
+    {
+        name: "rooms",
+        title: "房屋管理",
         icon: "md-grid",
     },
     {
