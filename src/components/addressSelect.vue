@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import rentalStatistics from "@/components/rentalStatistics";
+import util from '@/util'
 export default {
   props: {
     value: ""
@@ -13,17 +13,17 @@ export default {
   name: "",
   data() {
     return {
-      data: [
-        { name: "福田区下沙村8坊70号", id: "1" },
-        { name: "福田区下沙村8坊71号", id: "2" },
-        { name: "福田区下沙村8坊72号", id: "3" }
-      ],
+      data: [],
       val:"",
     };
   },
   mounted(){
-    this.val = this.value;
-
+    util.ajax("admin/building/list").then(({code,data})=>{
+      if(code == 0){
+        this.data = data;
+        this.val = this.value;
+      }
+    })
   },
   watch:{
       value(value){

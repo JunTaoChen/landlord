@@ -63,7 +63,6 @@ export default {
   },
   watch: {
     id: function(val) {
-      console.log(val, this.id);
       this.getData();
     }
   }

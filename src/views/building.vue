@@ -90,16 +90,7 @@ export default {
       searchData: {
         param: ""
       },
-      data: [
-        {
-          name: "张鑫",
-          num: "1",
-          card: "450203198605050730",
-          addr: "福田区下沙村8坊70号",
-          phone: "18888888888",
-          cont: "张琪(189999999999)"
-        }
-      ],
+      data: [],
       modal: {
         visible: false,
         title: "",

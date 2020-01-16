@@ -7,8 +7,8 @@
         <FormItem label="地址：">{{address}}</FormItem>
         <FormItem label="状态：">
           <RadioGroup v-model="searchData.status" @on-change="search">
-            <Radio :label="1">未出租</Radio>
             <Radio :label="2">已出租</Radio>
+            <Radio :label="1">未出租</Radio>
           </RadioGroup>
         </FormItem>
       </Form>
@@ -25,6 +25,7 @@
         :total="total"
         :current.sync="curPage"
         :pageSize.sync="pageSize"
+        :showPage="true"
       >
         <div key="name" title="门牌号"></div>
         <div key="houseType" title="户型"></div>
@@ -40,10 +41,10 @@
           </div>
         </div>
         <div key="dueDate" title="租约日期"></div>
-        <div title="操作" :width="220">
+        <div title="操作" :width="200">
           <div slot-scope="scope">
             <Button type="warning" size="small" @click="edit(scope)">编辑房间名</Button>
-            <Button type="info" size="small" @click="toBill(scope)">查看租金账单</Button>
+            <Button v-if="searchData.status == 2" type="info" size="small" @click="toBill(scope)">查看账单</Button>
           </div>
         </div>
       </v-table>
@@ -77,7 +78,7 @@ export default {
     return {
       url: "admin/room/list",
       searchData: {
-        status: 1,
+        status: 2,
         buildingId: ""
       },
       modal: {
@@ -98,16 +99,17 @@ export default {
     toBill(data) {},
     edit(item) {
       this.modal.data.id = item.id;
+      this.modal.data.name = item.name;
       this.modal.visible = true;
     },
     comfirmRoom() {
       this.$refs.form.validate(valid => {
         if (valid) {
           util.ajax.put("admin/room",this.modal.data).then(({code})=>{
-            if(code == 1){
+            if(code == 0){
               this.$Message.success('修改成功');
               this.modal.visible = false;
-              this.changePage();
+              this.changePage(this.curPage);
             }
           })
         }

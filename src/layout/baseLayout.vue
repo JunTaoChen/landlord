@@ -275,9 +275,9 @@ export default {
     // this.name = localStorage.user;
   },
   mounted() {
-    // if (!localStorage.token) {
-    //   this.$router.push({ name: "login" });
-    // }
+    if (!localStorage.token) {
+      this.$router.push({ name: "login" });
+    }
   }
 };
 </script>
