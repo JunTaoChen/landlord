@@ -22,7 +22,6 @@ export default {
   },
   methods:{
       getRooms(){
-          console.log(this.aid);
           if(this.aid == null){
              this.disabled=true;
              this.val = "";

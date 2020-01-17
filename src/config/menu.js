@@ -16,7 +16,7 @@ export const defaultMenu = [
         children:[
             {name:"contractAdd",title:"新增租约"},
             {name:"contractUpdate",title:"修改租约"},
-            {name:"contractPrint",title:"打印租约"},
+            // {name:"contractPrint",title:"打印租约"},
         ]
     },
     {

@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import cAdd from './views/contract/add.vue'
+import user from './views/account/user.vue'
 
 const cUpdate = { extends: cAdd }
 const cPrint = { extends: cAdd }
+
+const houseman = {extends: user }
+const tenant = {extends: user }
 
 Vue.use(Router)
 export const routes = [
@@ -13,10 +17,10 @@ export const routes = [
     redirect: "building",
     children: [
       { path: 'index', name: 'index', component: resolve => { require(['./views/index.vue'], resolve); } },
-      { path: 'landlord', name: 'landlord',meta:{parent:"account"}, component: resolve => { require(['./views/account/landlord.vue'], resolve); } },
+      { path: 'landlord', name: 'landlord',meta:{parent:"account"}, component: user},
       { path: 'rooms', name: 'rooms', component: resolve => { require(['./views/rooms.vue'], resolve); } },
-      { path: 'houseman', name: 'houseman',meta:{parent:"account"}, component: resolve => { require(['./views/account/houseman.vue'], resolve); } },
-      { path: 'tenant', name: 'tenant',meta:{parent:"account"}, component: resolve => { require(['./views/account/tenant.vue'], resolve); } },
+      { path: 'houseman', name: 'houseman',meta:{parent:"account"}, component: houseman},
+      { path: 'tenant', name: 'tenant',meta:{parent:"account"}, component: tenant},
       { path: 'building', name: 'building', component: resolve => { require(['./views/building.vue'], resolve); } },
       { path: 'add_bill', name: 'addBill',meta:{parent:"bill"}, component: resolve => { require(['./views/bill/add.vue'], resolve); } },
       { path: 'bill_list', name: 'billList',meta:{parent:"bill"}, component: resolve => { require(['./views/bill/list.vue'], resolve); } },

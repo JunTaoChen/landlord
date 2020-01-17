@@ -198,7 +198,13 @@ function getRequiredRule(message) {
     return {
         required: true,
         message: message,
-        trigger: 'blur'
+        trigger: 'blur',
+        transform: value => {
+            if (value == null) {
+                return "";
+            }
+            return value + "";
+        }
     }
 }
 util.getRequiredRule = getRequiredRule;
@@ -207,7 +213,13 @@ function getRequiredRuleOnChange(message) {
     return {
         required: true,
         message: message,
-        trigger: 'change'
+        trigger: 'change',
+        transform: value => {
+            if (value == null) {
+                return "";
+            }
+            return value + "";
+        }
     }
 }
 util.getRequiredRuleOnChange = getRequiredRuleOnChange;

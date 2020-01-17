@@ -65,35 +65,19 @@
       </Row>
       <Row>
         <Col span="12">
-          <FormItem  label="户型：">
+          <FormItem prop="houseType" label="户型：">
             <Row>
-              <Col span="4">
-                <InputNumber :min="0" :max="9" :readonly="disable" v-model="data.houseType1" class="block"></InputNumber>
-              </Col>
-              <Col span="2">&nbsp;室</Col>
-              <Col span="4">
-                <InputNumber :min="0" :max="9" :readonly="disable" v-model="data.houseType2" class="block"></InputNumber>
-              </Col>
-              <Col span="2">&nbsp;厅</Col>
-              <Col span="4">
-                <InputNumber :min="0" :max="9" :readonly="disable" v-model="data.houseType3" class="block"></InputNumber>
-              </Col>
-              <Col span="2">&nbsp;厨</Col>
-              <Col span="4">
-                <InputNumber :min="0" :max="9" :readonly="disable" v-model="data.houseType4" class="block"></InputNumber>
-              </Col>
-              <Col span="2">&nbsp;卫</Col>
+              <Select :disabled="disable" v-model="data.houseType" placeholder="请选择户型">
+                <Option v-for="item in houseTypes" :key="item" :value="item">{{item}}</Option>
+              </Select>
             </Row>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="type" label="房屋用途：">
             <Select :disabled="disable" v-model="data.type" placeholder="请选择房屋用途">
-              <Option value="0">个人</Option>
-              <Option value="1">宿舍</Option>
-              <!-- <Option value="3">办公</Option>
-              <Option value="4">工商业</Option>
-              <Option value="5">其他</Option> -->
+              <Option :value="0">个人</Option>
+              <Option :value="1">宿舍</Option>
             </Select>
           </FormItem>
         </Col>
@@ -101,69 +85,133 @@
       <Row>
         <Col span="12">
           <FormItem prop="baseRent" label="租金：">
-            <InputNumber :readonly="disable" v-model="data.baseRent" placeholder="请输入租金" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.baseRent"
+              placeholder="请输入租金"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="deposit" label="押金：">
-            <InputNumber :readonly="disable" v-model="data.deposit" placeholder="请输入押金" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.deposit"
+              placeholder="请输入押金"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
           <FormItem prop="manageFee" label="管理费：">
-            <InputNumber :readonly="disable" v-model="data.manageFee" placeholder="请输入管理费" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.manageFee"
+              placeholder="请输入管理费"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="netFee" label="网费：">
-            <InputNumber :readonly="disable" v-model="data.netFee" placeholder="请输入网费" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.netFee"
+              placeholder="请输入网费"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
           <FormItem prop="watermeterBase" label="水表底数：">
-            <InputNumber :readonly="disable" v-model="data.watermeterBase" placeholder="请输入水表底数" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.watermeterBase"
+              placeholder="请输入水表底数"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="elecmeterBase" label="电表底数：">
-            <InputNumber :readonly="disable" v-model="data.elecmeterBase" placeholder="请输入电表底数" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.elecmeterBase"
+              placeholder="请输入电表底数"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
           <FormItem prop="waterFee" label="水费单价：">
-            <InputNumber :readonly="disable" v-model="data.waterFee" placeholder="请输入水费单价" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.waterFee"
+              placeholder="请输入水费单价"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="elecFee" label="电表单价：">
-            <InputNumber :readonly="disable" v-model="data.elecFee" placeholder="请输入电表单价" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.elecFee"
+              placeholder="请输入电表单价"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
           <FormItem prop="gasFee" label="燃气费：">
-            <InputNumber :readonly="disable" v-model="data.gasFee" placeholder="请输入水表底数" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.gasFee"
+              placeholder="请输入燃气费"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem prop="hotWaterFee" label="热水费：">
-            <InputNumber :readonly="disable" v-model="data.hotWaterFee" placeholder="请输入电表底数" class="block"></InputNumber>
+            <InputNumber
+              :readonly="disable"
+              v-model="data.hotWaterFee"
+              placeholder="请输入热水费"
+              class="block"
+            ></InputNumber>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="firstRent" label="首次租金：">
-            <InputNumber :readonly="disable" v-model="data.firstRent" placeholder="请输入水表底数" class="block"></InputNumber>
+          <FormItem prop="rentDay" label="每月交租日：">
+            <Select :disabled="disable" v-model="data.rentDay" placeholder="请选择每月交租日" filterable>
+              <Option v-for="item in days" :key="item" :value="item">{{item}}日</Option>
+            </Select>
           </FormItem>
         </Col>
+        <Col span="12">
+          <FormItem prop="firstRent" label="首次租金：">
+            <InputNumber
+              :readonly="disable"
+              v-model="data.firstRent"
+              placeholder="请输入首次租金"
+              class="block"
+            ></InputNumber>
+          </FormItem>
+        </Col>
+      </Row>
+      <Row>
         <Col span="12">
           <FormItem prop="firstRentDate" label="首次账单日期：">
             <DatePicker
@@ -178,8 +226,12 @@
       </Row>
       <Row class="buttons">
         <Button v-if="status==1" type="success" size="large" class="comfirm" @click="comfirm">新增</Button>
-        <Button v-else-if="status==2" type="info" size="large" class="comfirm" @click="comfirm">修改</Button>
-        <Button v-else type="primary" size="large" class="comfirm" @click="print">打印</Button>
+        <template v-else-if="status==2">
+          <Button type="info" size="large" class="comfirm" @click="comfirm">修改</Button>
+          <Button type="primary" size="large" class="comfirm" @click="print">打印</Button>
+          <Button type="success" size="large" class="comfirm" @click="exportData">导出</Button>
+          <Button type="error" size="large" class="comfirm" @click="del">删除</Button>
+        </template>
       </Row>
     </Form>
   </Card>
@@ -192,65 +244,75 @@ import util from "@/util";
 //1新增 2编辑 3打印
 let status = 1;
 let rules = util.getRules();
+const HOUST_TYPE = [
+  "一室一厨一卫",
+  "一室一厅一厨一卫",
+  "两室一厅一厨一卫",
+  "三室一厅一厨一卫",
+  "三室两厅一厨一卫",
+  "四室两厅一厨两卫"
+];
+const DAYS = Array(28)
+  .fill(" ")
+  .map((e, i) => i + 1);
+const formatDay = date => util.formatTime(date, "YYYY-MM-dd");
 export default {
   components: { addressSelect, roomsSelect },
   name: "",
   data() {
     return {
       data: {
-        buildingId:null,
-        roomId:"",
-        name:"",
-        idCardNo:"",
-        dates:[],
-        houseType1:null,
-        houseType2:null,
-        houseType3:null,
-        houseType4:null,
-        type:null,
-        baseRent:null,
-        deposit:null,
-        manageFee:null,
-        netFee:null,
-
-        watermeterBase:null,
-        elecmeterBase:null,
-        waterFee:null,
-        elecFee:null,
-        gasFee:null,
-        hotWaterFee:null,
-        firstRent:null,
-        firstRentDate:null,
+        buildingId: null,
+        roomId: "",
+        name: "",
+        idCardNo: "",
+        dates: [],
+        houseType: null,
+        type: null,
+        baseRent: null,
+        deposit: null,
+        manageFee: null,
+        netFee: null,
+        watermeterBase: null,
+        elecmeterBase: null,
+        waterFee: null,
+        elecFee: null,
+        gasFee: null,
+        hotWaterFee: null,
+        firstRent: null,
+        firstRentDate: null,
+        rentDay: null
       },
       rules: {
-        roomId:util.getRequiredRule("请选择房间"),
-        name:util.getRequiredRule("姓名不能为空"),
-        mobile:rules.phone,
-        idCardNo:rules.idCardNum,
-        dates:{
-          type:"array",
+        roomId: util.getRequiredRule("请选择门牌号"),
+        name: util.getRequiredRule("姓名不能为空"),
+        mobile: rules.phone,
+        idCardNo: rules.idCardNum,
+        dates: {
+          type: "array",
           required: true,
           len: 2,
-          trigger: 'change',
-          message:"日期不能为空",
-          fields:{
-            0:{type:"date",message:"日期不能为空",},
-            1:{type:"date",message:"日期不能为空",},
+          trigger: "change",
+          message: "日期不能为空",
+          fields: {
+            0: { type: "date", message: "日期不能为空" },
+            1: { type: "date", message: "日期不能为空" }
           }
         },
-        type:util.getRequiredRuleOnChange("房屋用途不能为空"),
-        baseRent:util.getRequiredRule("租金不能为空"),
-        deposit:util.getRequiredRule("押金不能为空"),
-        manageFee:util.getRequiredRule("管理费不能为空"),
-        netFee:util.getRequiredRule("网费不能为空"),
-        watermeterBase:util.getRequiredRule("水表底数不能为空"),
-        elecmeterBase:util.getRequiredRule("电表底数不能为空"),
-        waterFee:util.getRequiredRule("水费单价不能为空"),
-        elecFee:util.getRequiredRule("电表单价不能为空"),
-        gasFee:util.getRequiredRule("燃气费不能为空"),
-        hotWaterFee:util.getRequiredRule("热水费不能为空"),
+        type: util.getRequiredRuleOnChange("房屋用途不能为空"),
+        baseRent: util.getRequiredRule("租金不能为空"),
+        deposit: util.getRequiredRule("押金不能为空"),
+        manageFee: util.getRequiredRule("管理费不能为空"),
+        netFee: util.getRequiredRule("网费不能为空"),
+        watermeterBase: util.getRequiredRule("水表底数不能为空"),
+        elecmeterBase: util.getRequiredRule("电表底数不能为空"),
+        waterFee: util.getRequiredRule("水费单价不能为空"),
+        elecFee: util.getRequiredRule("电表单价不能为空"),
+        gasFee: util.getRequiredRule("燃气费不能为空"),
+        hotWaterFee: util.getRequiredRule("热水费不能为空"),
+        rentDay: util.getRequiredRuleOnChange("每月交租日不能为空")
       },
-      title: "新增租约"
+      title: "新增租约",
     };
   },
   computed: {
@@ -259,6 +321,12 @@ export default {
     },
     disable() {
       return this.status === 3;
+    },
+    houseTypes() {
+      return HOUST_TYPE;
+    },
+    days() {
+      return DAYS;
     }
   },
   created() {
@@ -269,20 +337,41 @@ export default {
     } else if (path == "/contract_print") {
       status = 3;
       this.title = "打印租约";
-    }
-    if (status == 1) {
-      
     } else {
-      this.data = {};
+      status = 1;
+      this.title = "新增租约";
     }
   },
-  methods:{
-    print(){
-      window.open("#/contract/print/123")
+  methods: {
+    exportData(){
+
     },
-    comfirm(){
+    del(){
+
+    },
+    print() {
+      window.open("#/contract/print/123");
+    },
+    comfirm() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          const data = { ...this.data };
+          const { dates, firstRentDate } = data;
+          data.checkinDate = formatDay(dates[0]);
+          data.dueDate = formatDay(dates[1]);
+          delete data.dates;
+          delete data.buildingId;
+          data.firstRentDate = formatDay(firstRentDate);
+          console.log(data);
+          util.ajax.post("admin/contract", data).then(({ code }) => {
+            if (code == 0) {
+              if (this.status == 1) {
+                this.$Message.success("新增成功");
+              } else if (this.status == 2) {
+                this.$Message.success("修改成功");
+              }
+            }
+          });
         }
       });
     }
@@ -294,7 +383,8 @@ export default {
 .buttons {
   text-align: center;
   .comfirm {
-    width: 300px;
+    width: 220px;
+    margin: 0 10px;
   }
 }
 .block {
