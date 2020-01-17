@@ -22,7 +22,8 @@ export default {
   },
   methods:{
       getRooms(){
-          if(this.aid == ""){
+          console.log(this.aid);
+          if(this.aid == null){
              this.disabled=true;
              this.val = "";
              this.placeholder = "请先选择地址"; 
@@ -55,7 +56,7 @@ export default {
           this.$emit("input",value);
       },
       aid(){
-        this.$emit("input","");
+        this.$emit("input",null);
         this.getRooms();
       }
   }

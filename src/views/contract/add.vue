@@ -9,7 +9,7 @@
         </Col>
         <Col span="12">
           <FormItem prop="roomId" label="门牌号：">
-            <rooms-select v-model="data.roomId" :aid="data.aid"></rooms-select>
+            <rooms-select v-model="data.roomId" :aid="data.buildingId"></rooms-select>
           </FormItem>
         </Col>
       </Row>
@@ -89,8 +89,8 @@
         <Col span="12">
           <FormItem prop="type" label="房屋用途：">
             <Select :disabled="disable" v-model="data.type" placeholder="请选择房屋用途">
-              <Option :value="0">个人</Option>
-              <Option :value="1">宿舍</Option>
+              <Option value="0">个人</Option>
+              <Option value="1">宿舍</Option>
               <!-- <Option value="3">办公</Option>
               <Option value="4">工商业</Option>
               <Option value="5">其他</Option> -->
@@ -177,8 +177,8 @@
         </Col>
       </Row>
       <Row class="buttons">
-        <Button v-if="status==1" type="success" size="large" class="comfirm">新增</Button>
-        <Button v-else-if="status==2" type="info" size="large" class="comfirm">修改</Button>
+        <Button v-if="status==1" type="success" size="large" class="comfirm" @click="comfirm">新增</Button>
+        <Button v-else-if="status==2" type="info" size="large" class="comfirm" @click="comfirm">修改</Button>
         <Button v-else type="primary" size="large" class="comfirm" @click="print">打印</Button>
       </Row>
     </Form>
@@ -198,13 +198,13 @@ export default {
   data() {
     return {
       data: {
-        buildingId:"",
+        buildingId:null,
         roomId:"",
         name:"",
         idCardNo:"",
         dates:[],
-        houseType1:2,
-        houseType2:undefined,
+        houseType1:null,
+        houseType2:null,
         houseType3:null,
         houseType4:null,
         type:null,
@@ -223,7 +223,7 @@ export default {
         firstRentDate:null,
       },
       rules: {
-        roomId:util.getRequiredRuleOnChange(),
+        roomId:util.getRequiredRule("请选择房间"),
         name:util.getRequiredRule("姓名不能为空"),
         mobile:rules.phone,
         idCardNo:rules.idCardNum,
@@ -232,7 +232,11 @@ export default {
           required: true,
           len: 2,
           trigger: 'change',
-          message:"日期不能为空"
+          message:"日期不能为空",
+          fields:{
+            0:{type:"date",message:"日期不能为空",},
+            1:{type:"date",message:"日期不能为空",},
+          }
         },
         type:util.getRequiredRuleOnChange("房屋用途不能为空"),
         baseRent:util.getRequiredRule("租金不能为空"),
@@ -267,31 +271,7 @@ export default {
       this.title = "打印租约";
     }
     if (status == 1) {
-      this.data = {
-        buildingId:"",
-        roomId:"",
-        name:"",
-        idCardNo:"",
-        dates:[],
-        houseType1:null,
-        houseType2:null,
-        houseType3:null,
-        houseType4:null,
-        type:null,
-        baseRent:null,
-        deposit:null,
-        manageFee:null,
-        netFee:null,
-
-        watermeterBase:null,
-        elecmeterBase:null,
-        waterFee:null,
-        elecFee:null,
-        gasFee:null,
-        hotWaterFee:null,
-        firstRent:null,
-        firstRentDate:null,
-      };
+      
     } else {
       this.data = {};
     }
@@ -299,6 +279,12 @@ export default {
   methods:{
     print(){
       window.open("#/contract/print/123")
+    },
+    comfirm(){
+      this.$refs.form.validate(valid => {
+        if (valid) {
+        }
+      });
     }
   }
 };
