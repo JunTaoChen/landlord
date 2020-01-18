@@ -9,55 +9,60 @@ import util from "@/util";
 export default {
   props: {
     value: "",
-    aid:"",
+    aid: ""
   },
   name: "",
   data() {
     return {
       data: [],
-      val:"",
-      disabled:false,
-      placeholder:""
+      val: "",
+      disabled: false,
+      placeholder: ""
     };
   },
-  methods:{
-      getRooms(){
-          if(this.aid == null){
-             this.disabled=true;
-             this.val = "";
-             this.placeholder = "请先选择地址"; 
-             return;
-          }else{
-            this.disabled=false;
-            this.placeholder = "请选择门牌号"; 
-          }
-          util.ajax.get("admin/room/list",{params:{buildingId:this.aid}}).then(({code,data})=>{
-            if(code == 0){
-              this.data = data;
-              if(data.length==0){
-                this.$Message.warning("该房源暂无房屋");
-                this.disabled=true;
-              }
-            }
-          })
+  methods: {
+    getRooms() {
+      if (this.aid == null) {
+        this.disabled = true;
+        this.val = "";
+        this.placeholder = "请先选择地址";
+        return;
+      } else {
+        this.disabled = false;
+        this.placeholder = "请选择门牌号";
       }
+      util.ajax
+        .get("admin/room/list", { params: { buildingId: this.aid } })
+        .then(({ code, data }) => {
+          if (code == 0) {
+            this.data = data;
+            if (data.length == 0) {
+              this.$Message.warning("该房源暂无房屋");
+              this.disabled = true;
+            }
+          }
+        });
+    }
   },
-  mounted(){
+  mounted() {
     this.val = this.value;
     this.getRooms();
-    
   },
-  watch:{
-      value(value){
-          this.val = value;
-      },
-      val(value){
-          this.$emit("input",value);
-      },
-      aid(){
-        this.$emit("input",null);
-        this.getRooms();
+  watch: {
+    value(value) {
+      this.val = value;
+    },
+    val(value) {
+      if (value === undefined) {
+        return;
       }
+      this.$emit("input", value);
+      this.$emit("change");
+    },
+    aid() {
+      this.$emit("input", null);
+      this.getRooms();
+    }
   }
 };
 </script>

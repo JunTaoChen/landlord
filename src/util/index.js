@@ -215,8 +215,8 @@ function getRequiredRuleOnChange(message) {
         message: message,
         trigger: 'change',
         transform: value => {
-            if (value == null) {
-                return "";
+            if (value === null) {
+                return null;
             }
             return value + "";
         }

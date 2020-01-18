@@ -3,225 +3,138 @@
     <Form ref="form" :model="data" :rules="rules" :label-width="100">
       <Row>
         <Col span="12">
-          <FormItem prop="buildingId" label="地址：">
-            <address-select v-model="data.buildingId"></address-select>
-          </FormItem>
+        <FormItem prop="buildingId" label="地址：">
+          <address-select v-model="data.buildingId"></address-select>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="roomId" label="门牌号：">
-            <rooms-select v-model="data.roomId" :aid="data.buildingId"></rooms-select>
-          </FormItem>
-        </Col>
-      </Row>
-      <Row>
-        <Col span="12">
-          <FormItem prop="name" label="姓名：">
-            <Input
-              :readonly="disable"
-              :clearable="!disable"
-              v-model="data.name"
-              placeholder="请输入姓名"
-              :maxlength="15"
-            />
-          </FormItem>
-        </Col>
-        <Col span="12">
-          <FormItem prop="mobile" label="手机号：">
-            <Input
-              :readonly="disable"
-              :clearable="!disable"
-              v-model="data.mobile"
-              placeholder="请输入手机号"
-              :maxlength="11"
-            />
-          </FormItem>
+        <FormItem prop="roomId" label="门牌号：">
+          <rooms-select v-model="data.roomId" :aid="data.buildingId" @change="roomChange"></rooms-select>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="idCardNo" label="身份证号：">
-            <Input
-              :readonly="disable"
-              :clearable="!disable"
-              v-model="data.idCardNo"
-              placeholder="请输入身份证号"
-              :maxlength="18"
-              clearable
-            />
-          </FormItem>
+        <FormItem prop="name" label="姓名：">
+          <Input :readonly="disable" :clearable="!disable" v-model="data.name" placeholder="请输入姓名" :maxlength="15" />
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="dates" label="日期：">
-            <DatePicker
-              :disabled="disable"
-              type="daterange"
-              split-panels
-              placeholder="请选择日期"
-              class="block"
-              v-model="data.dates"
-            ></DatePicker>
-          </FormItem>
+        <FormItem prop="mobile" label="手机号：">
+          <Input :readonly="disable" :clearable="!disable" v-model="data.mobile" placeholder="请输入手机号" :maxlength="11" />
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="houseType" label="户型：">
-            <Row>
-              <Select :disabled="disable" v-model="data.houseType" placeholder="请选择户型">
-                <Option v-for="item in houseTypes" :key="item" :value="item">{{item}}</Option>
-              </Select>
-            </Row>
-          </FormItem>
+        <FormItem prop="idCardNo" label="身份证号：">
+          <Input :readonly="disable" :clearable="!disable" v-model="data.idCardNo" placeholder="请输入身份证号" :maxlength="18" clearable />
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="type" label="房屋用途：">
-            <Select :disabled="disable" v-model="data.type" placeholder="请选择房屋用途">
-              <Option :value="0">个人</Option>
-              <Option :value="1">宿舍</Option>
+        <FormItem prop="dates" label="日期：">
+          <DatePicker :disabled="disable" type="daterange" split-panels placeholder="请选择日期" class="block" v-model="data.dates"></DatePicker>
+        </FormItem>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="12">
+        <FormItem prop="houseType" label="户型：">
+          <Row>
+            <Select :disabled="disable" v-model="data.houseType" placeholder="请选择户型">
+              <Option v-for="item in houseTypes" :key="item" :value="item">{{item}}</Option>
             </Select>
-          </FormItem>
+          </Row>
+        </FormItem>
+        </Col>
+        <Col span="12">
+        <FormItem prop="type" label="房屋用途：">
+          <Select :disabled="disable" v-model="data.type" placeholder="请选择房屋用途">
+            <Option :value="0">个人</Option>
+            <Option :value="1">宿舍</Option>
+          </Select>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="baseRent" label="租金：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.baseRent"
-              placeholder="请输入租金"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="baseRent" label="租金：">
+          <InputNumber :readonly="disable" v-model="data.baseRent" placeholder="请输入租金" class="block"></InputNumber>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="deposit" label="押金：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.deposit"
-              placeholder="请输入押金"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="deposit" label="押金：">
+          <InputNumber :readonly="disable" v-model="data.deposit" placeholder="请输入押金" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="manageFee" label="管理费：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.manageFee"
-              placeholder="请输入管理费"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="manageFee" label="管理费：">
+          <InputNumber :readonly="disable" v-model="data.manageFee" placeholder="请输入管理费" class="block"></InputNumber>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="netFee" label="网费：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.netFee"
-              placeholder="请输入网费"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="netFee" label="网费：">
+          <InputNumber :readonly="disable" v-model="data.netFee" placeholder="请输入网费" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="watermeterBase" label="水表底数：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.watermeterBase"
-              placeholder="请输入水表底数"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="watermeterBase" label="水表底数：">
+          <InputNumber :readonly="disable" v-model="data.watermeterBase" placeholder="请输入水表底数" class="block"></InputNumber>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="elecmeterBase" label="电表底数：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.elecmeterBase"
-              placeholder="请输入电表底数"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="elecmeterBase" label="电表底数：">
+          <InputNumber :readonly="disable" v-model="data.elecmeterBase" placeholder="请输入电表底数" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="waterFee" label="水费单价：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.waterFee"
-              placeholder="请输入水费单价"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="waterFee" label="水费单价：">
+          <InputNumber :readonly="disable" v-model="data.waterFee" placeholder="请输入水费单价" class="block"></InputNumber>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="elecFee" label="电表单价：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.elecFee"
-              placeholder="请输入电表单价"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="elecFee" label="电表单价：">
+          <InputNumber :readonly="disable" v-model="data.elecFee" placeholder="请输入电表单价" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="gasFee" label="燃气费：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.gasFee"
-              placeholder="请输入燃气费"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="gasFee" label="燃气费：">
+          <InputNumber :readonly="disable" v-model="data.gasFee" placeholder="请输入燃气费" class="block"></InputNumber>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="hotWaterFee" label="热水费：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.hotWaterFee"
-              placeholder="请输入热水费"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="hotWaterFee" label="热水费：">
+          <InputNumber :readonly="disable" v-model="data.hotWaterFee" placeholder="请输入热水费" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="rentDay" label="每月交租日：">
-            <Select :disabled="disable" v-model="data.rentDay" placeholder="请选择每月交租日" filterable>
-              <Option v-for="item in days" :key="item" :value="item">{{item}}日</Option>
-            </Select>
-          </FormItem>
+        <FormItem prop="rentDay" label="每月交租日：">
+          <Select :disabled="disable" v-model="data.rentDay" placeholder="请选择每月交租日" filterable>
+            <Option v-for="item in days" :key="item" :value="item">{{item}}日</Option>
+          </Select>
+        </FormItem>
         </Col>
         <Col span="12">
-          <FormItem prop="firstRent" label="首次租金：">
-            <InputNumber
-              :readonly="disable"
-              v-model="data.firstRent"
-              placeholder="请输入首次租金"
-              class="block"
-            ></InputNumber>
-          </FormItem>
+        <FormItem prop="firstRent" label="首次租金：">
+          <InputNumber :readonly="disable" v-model="data.firstRent" placeholder="请输入首次租金" class="block"></InputNumber>
+        </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="12">
-          <FormItem prop="firstRentDate" label="首次账单日期：">
-            <DatePicker
-              :disabled="disable"
-              type="date"
-              placeholder="请选择首次账单日期"
-              class="block"
-              v-model="data.firstRentDate"
-            ></DatePicker>
-          </FormItem>
+        <FormItem prop="firstRentDate" label="首次账单日期：">
+          <DatePicker :disabled="disable" type="date" placeholder="请选择首次账单日期" class="block" v-model="data.firstRentDate"></DatePicker>
+        </FormItem>
         </Col>
       </Row>
       <Row class="buttons">
@@ -312,7 +225,7 @@ export default {
         hotWaterFee: util.getRequiredRule("热水费不能为空"),
         rentDay: util.getRequiredRuleOnChange("每月交租日不能为空")
       },
-      title: "新增租约",
+      title: "新增租约"
     };
   },
   computed: {
@@ -343,16 +256,78 @@ export default {
     }
   },
   methods: {
-    exportData(){
-
+    roomChange() {
+      const { roomId, buildingId } = this.data;
+      if (roomId) {
+        util
+          .ajax("/admin/contract", { params: { roomId } })
+          .then(({ code, data }) => {
+            if (code == 0) {
+              if (data) {
+                data.dates = [data.checkinDate, data.dueDate];
+                delete data.checkinDate;
+                delete data.dueDate;
+                this.data = { ...data, roomId, buildingId };
+              } else {
+                this.$refs.form.resetFields();
+                this.data.roomId = roomId;
+                this.data.buildingId = buildingId;
+                this.$Message.warning("该房间暂无合同");
+              }
+            }
+          });
+      }
     },
-    del(){
-
+    exportData() {
+      if (!this.checkId()) {
+        return;
+      }
+      util
+        .ajax("/admin/contract/export", {
+          params: { contractId: this.data.id }
+        })
+        .then(rep => {
+         const blob = new Blob([rep.data])
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download =  `合同-${this.data.name}.xls`;
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+        });
+      // window.open(
+      //   util.baseURL + "/admin/contract/export?contractId=" + this.data.id
+      // );
+    },
+    del() {
+      if (!this.checkId()) {
+        return;
+      }
+      util.ajax
+        .delete("/admin/contract", { params: { contractId: this.data.id } })
+        .then(({ code }) => {
+          if (code == 0) {
+            this.$Message.success("删除成功");
+            this.$refs.form.resetFields();
+          }
+        });
     },
     print() {
+      if (!this.checkId()) {
+        return;
+      }
       window.open("#/contract/print/123");
     },
     comfirm() {
+      if (this.status == 2 && !this.checkId()) {
+        return;
+      }
       this.$refs.form.validate(valid => {
         if (valid) {
           const data = { ...this.data };
@@ -362,7 +337,11 @@ export default {
           delete data.dates;
           delete data.buildingId;
           data.firstRentDate = formatDay(firstRentDate);
-          console.log(data);
+          if (this.status == 2) {
+            delete data.roomAddress;
+            delete data.img;
+            delete data.attachContactList;
+          }
           util.ajax.post("admin/contract", data).then(({ code }) => {
             if (code == 0) {
               if (this.status == 1) {
@@ -374,6 +353,13 @@ export default {
           });
         }
       });
+    },
+    checkId() {
+      if (!this.data.id) {
+        this.$Message.warning("请先选择房屋");
+        return false;
+      }
+      return true;
     }
   }
 };
