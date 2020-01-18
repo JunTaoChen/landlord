@@ -4,7 +4,7 @@
       <Form :label-width="150" class="block" @submit.native.prevent>
         <FormItem label="姓名或手机号：">
           <Input
-            v-model="searchData.name"
+            v-model="searchData.param"
             placeholder="请输入姓名或手机号"
             class="common-input"
             search
@@ -96,11 +96,9 @@ export default {
       },
       title: "房东列表",
       searchData: {
-        name: ""
-      },
-      queryTerms: {
+        param: "",
         type: 1
-      }
+      },
     };
   },
   computed: {
@@ -120,7 +118,7 @@ export default {
       status = 1;
       this.title = "房东列表";
     }
-    this.queryTerms.type = status;
+    this.searchData.type = status;
   },
   methods: {
     edit({ id, idCardNo, mobile, name }) {
@@ -142,7 +140,7 @@ export default {
     }
   },
   mounted() {
-    this.changePage(1);
+    this.search();
   }
 };
 </script>

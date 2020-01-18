@@ -1,85 +1,68 @@
 <template>
   <div>
     <v-table ref="table" :table="{data:data,loading:loading,border:disableOperating}" class="bill-list">
-      <div key="id" title="房号"></div>
-      <div title="总费用" :width="80">
+      <div :minWidth="75" key="roomNo" title="房号"></div>
+      <div title="总费用" :minWidth="80">
         <div slot-scope="scope">
-          <span v-if="!isFirst">{{scope.p1+scope.p4*scope.p5+scope.p8*scope.p9}}</span>
+          <span v-if="!isFirst">{{scope.baseRent+scope.practicalElecmeter*scope.elecFee+scope.practicalWatermeter*scope.waterFee}}</span>
           <InputNumber :min="0" v-else v-model="scope.p10"></InputNumber>
         </div>
       </div>
-      <div key="p1" title="租金"></div>
-      <div title="上月电">
+      <div :minWidth="75" key="baseRent" title="租金"></div>
+      <div :minWidth="75" key="elecmeterLastmonth" title="上月电"></div>
+      <div :minWidth="75" title="本月电">
         <div slot-scope="scope">
           <InputNumber
             :disabled="readonly&&!scope.isEdit"
             :min="0"
-            v-model="scope.p2"
+            v-model="scope.elecmeterThismonth"
             @on-change="calculateElectricity(scope)"
           ></InputNumber>
         </div>
       </div>
-      <div title="本月电">
-        <div slot-scope="scope">
-          <InputNumber
-            :disabled="readonly&&!scope.isEdit"
-            :min="0"
-            v-model="scope.p3"
-            @on-change="calculateElectricity(scope)"
-          ></InputNumber>
-        </div>
-      </div>
-      <div title="实用电">
+      <div :minWidth="75" title="实用电">
         <div slot-scope="scope">
           <InputNumber
             :min="0"
             @on-change="verificationElectricity(scope)"
             :class="{'bg-warning':scope.electricityWarning}"
-            v-model="scope.p4"
+            v-model="scope.practicalElecmeter"
             :disabled="readonly&&!scope.isEdit"
           ></InputNumber>
         </div>
       </div>
-      <div key="p5" title="电单价"></div>
-      <div title="总电费">
-        <div slot-scope="scope">{{scope.p4*scope.p5}}</div>
+      <div :minWidth="75" key="elecFee" title="电单价"></div>
+      <div :minWidth="75" title="总电费">
+        <div slot-scope="scope">{{scope.practicalElecmeter*scope.elecFee}}</div>
       </div>
-      <div title="上月水">
+      <div :minWidth="75" key="watermeterLastmonth" title="上月水"></div>
+      <div :minWidth="75" title="本月水">
         <div slot-scope="scope">
           <InputNumber
             :disabled="readonly&&!scope.isEdit"
             :min="0"
-            v-model="scope.p6"
+            v-model="scope.watermeterThismonth"
             @on-change="calculateWaterFee(scope)"
           ></InputNumber>
         </div>
       </div>
-      <div title="本月水">
-        <div slot-scope="scope">
-          <InputNumber
-            :disabled="readonly&&!scope.isEdit"
-            :min="0"
-            v-model="scope.p7"
-            @on-change="calculateWaterFee(scope)"
-          ></InputNumber>
-        </div>
-      </div>
-      <div title="实用水">
+      <div :minWidth="75" title="实用水">
         <div slot-scope="scope">
           <InputNumber
             :min="0"
             @on-change="verificationWaterFee(scope)"
             :class="{'bg-warning':scope.waterFeeWarming}"
-            v-model="scope.p8"
+            v-model="scope.practicalWatermeter"
             :disabled="readonly&&!scope.isEdit"
           ></InputNumber>
         </div>
       </div>
-      <div key="p9" title="电单价"></div>
-      <div title="总水费">
-        <div slot-scope="scope">{{scope.p8*scope.p9}}</div>
+      <div key="waterFee" :minWidth="75" title="水单价"></div>
+      <div :minWidth="75" title="总水费">
+        <div slot-scope="scope">{{scope.practicalWatermeter*scope.waterFee}}</div>
       </div>
-      <div title="操作" v-if="!disableOperating" :width="readonly?130:90">
+      <div :minWidth="90" title="其他费用"></div>
+      <div title="操作" v-if="!disableOperating" :width="readonly?130:90" fixed="right">
         <div slot-scope="scope">
           <Button type="info" size="small" @click="change(scope)" v-if="!isFirst && !readonly">首月入住</Button>
 
@@ -130,17 +113,17 @@ export default {
   },
   methods: {
     calculateElectricity(item) {
-      const { p3, p2 } = item;
-      if (util.isEmpty(p2) || util.isEmpty(p3)) {
+      const { elecmeterLastmonth, elecmeterThismonth } = item;
+      if (util.isEmpty(elecmeterThismonth) || util.isEmpty(elecmeterLastmonth)) {
         return;
       }
-      item.p4 = p3 - p2;
+      item.practicalElecmeter = elecmeterThismonth - elecmeterLastmonth;
       item.electricityWarning = false;
       this.update(item);
     },
     verificationElectricity(item) {
-      const { p3, p2, p4 } = item;
-      if (p4 != p3 - p2) {
+      const { practicalElecmeter, elecmeterThismonth, elecmeterLastmonth } = item;
+      if (practicalElecmeter != elecmeterThismonth - elecmeterLastmonth) {
         item.electricityWarning = true;
       } else {
         item.electricityWarning = false;
@@ -148,17 +131,17 @@ export default {
       this.update(item);
     },
     calculateWaterFee(item) {
-      const { p6, p7 } = item;
-      if (util.isEmpty(p6) || util.isEmpty(p7)) {
+      const { watermeterLastmonth, watermeterThismonth } = item;
+      if (util.isEmpty(watermeterThismonth) || util.isEmpty(watermeterThismonth)) {
         return;
       }
-      item.p8 = p7 - p6;
+      item.practicalWatermeter = watermeterThismonth - watermeterLastmonth;
       item.waterFeeWarming = false;
       this.update(item);
     },
     verificationWaterFee(item) {
-      const { p6, p7, p8 } = item;
-      if (p8 != p7 - p6) {
+      const { practicalWatermeter, watermeterThismonth, watermeterLastmonth } = item;
+      if (practicalWatermeter != watermeterThismonth - watermeterLastmonth) {
         item.waterFeeWarming = true;
       } else {
         item.waterFeeWarming = false;

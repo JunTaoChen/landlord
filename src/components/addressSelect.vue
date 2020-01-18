@@ -32,7 +32,7 @@ export default {
     val(value) {
       this.$emit("input", value);
       this.$nextTick(()=>{
-        this.$emit('on-change');
+        this.$emit('change',this.data.find(i=>i.id==value));
       })
     }
   }

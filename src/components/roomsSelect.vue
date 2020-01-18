@@ -57,7 +57,7 @@ export default {
         return;
       }
       this.$emit("input", value);
-      this.$emit("change");
+      this.$emit("change",this.data.find(i=>i.id==value));
     },
     aid() {
       this.$emit("input", null);

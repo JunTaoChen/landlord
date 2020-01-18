@@ -4,11 +4,11 @@
       <Row>
         <Col span="12">
         <FormItem prop="buildingId" label="地址：">
-          <address-select v-model="data.buildingId"></address-select>
+          <address-select @change="addressChange" v-model="data.buildingId"></address-select>
         </FormItem>
         </Col>
         <Col span="12">
-        <FormItem prop="roomId" label="门牌号：">
+        <FormItem prop="roomId" label="房间：">
           <rooms-select v-model="data.roomId" :aid="data.buildingId" @change="roomChange"></rooms-select>
         </FormItem>
         </Col>
@@ -50,8 +50,7 @@
         <Col span="12">
         <FormItem prop="type" label="房屋用途：">
           <Select :disabled="disable" v-model="data.type" placeholder="请选择房屋用途">
-            <Option :value="0">个人</Option>
-            <Option :value="1">宿舍</Option>
+            <Option v-for="item in types" :value="item.key" :key="item.key">{{item.value}}</Option>
           </Select>
         </FormItem>
         </Col>
@@ -154,6 +153,7 @@
 import addressSelect from "@/components/addressSelect.vue";
 import roomsSelect from "@/components/roomsSelect.vue";
 import util from "@/util";
+import {CONTRACT_TYPE} from '@/util/constant.js'
 //1新增 2编辑 3打印
 let status = 1;
 let rules = util.getRules();
@@ -169,6 +169,7 @@ const DAYS = Array(28)
   .fill(" ")
   .map((e, i) => i + 1);
 const formatDay = date => util.formatTime(date, "YYYY-MM-dd");
+Object.freeze(CONTRACT_TYPE);
 export default {
   components: { addressSelect, roomsSelect },
   name: "",
@@ -225,7 +226,10 @@ export default {
         hotWaterFee: util.getRequiredRule("热水费不能为空"),
         rentDay: util.getRequiredRuleOnChange("每月交租日不能为空")
       },
-      title: "新增租约"
+      title: "新增租约",
+      address:"",
+      room:"",
+      types:CONTRACT_TYPE
     };
   },
   computed: {
@@ -256,7 +260,16 @@ export default {
     }
   },
   methods: {
-    roomChange() {
+    addressChange(item){
+      if(item){
+        this.address = item.name;
+      }
+      
+    },
+    roomChange(item) {
+      if(item){
+        this.room = item.name;
+      }
       const { roomId, buildingId } = this.data;
       if (roomId) {
         util
@@ -284,7 +297,8 @@ export default {
       }
       util
         .ajax("/admin/contract/export", {
-          params: { contractId: this.data.id }
+          params: { contractId: this.data.id },
+          responseType:'blob'
         })
         .then(rep => {
          const blob = new Blob([rep.data])
@@ -322,7 +336,7 @@ export default {
       if (!this.checkId()) {
         return;
       }
-      window.open("#/contract/print/123");
+      window.open(`#/contract/print/${this.data.roomId}?address=${this.address}&room=${this.room}`);
     },
     comfirm() {
       if (this.status == 2 && !this.checkId()) {
@@ -332,6 +346,7 @@ export default {
         if (valid) {
           const data = { ...this.data };
           const { dates, firstRentDate } = data;
+          let method = "post"
           data.checkinDate = formatDay(dates[0]);
           data.dueDate = formatDay(dates[1]);
           delete data.dates;
@@ -341,8 +356,9 @@ export default {
             delete data.roomAddress;
             delete data.img;
             delete data.attachContactList;
+            method = "put";
           }
-          util.ajax.post("admin/contract", data).then(({ code }) => {
+          util.ajax("admin/contract", {method,data}).then(({ code }) => {
             if (code == 0) {
               if (this.status == 1) {
                 this.$Message.success("新增成功");

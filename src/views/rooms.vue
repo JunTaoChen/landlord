@@ -5,7 +5,7 @@
     <search-card>
       <Form :label-width="100" class="block" @submit.native.prevent>
         <FormItem label="楼名：">
-          <address-select v-model="searchData.buildingId" @on-change="search"></address-select>
+          <address-select v-model="searchData.buildingId" @change="search"></address-select>
         </FormItem>
         <FormItem label="状态：">
           <RadioGroup v-model="searchData.status" @on-change="search">
