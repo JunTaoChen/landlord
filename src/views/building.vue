@@ -49,7 +49,7 @@
           <div slot-scope="scope">
             <!-- <Button type="warning" size="small" @click="edit(scope)" >编辑</Button>
             <Button type="error" size="small" @click="del(scope)">删除</Button>-->
-            <Button type="warning" size="small" @click="viewHouse(scope)">查看楼层房屋</Button>
+            <Button type="warning" size="small" @click="viewHouse(scope)">查看房屋</Button>
             <Button type="info" size="small" @click="edit(scope)">编辑联系人</Button>
           </div>
         </div>

@@ -39,22 +39,25 @@
       <div :minWidth="commonMinWidth" title="总水费">
         <div slot-scope="scope">{{scope.practicalWatermeter*scope.waterFee}}</div>
       </div>
+      <div v-if="readonly" :minWidth="commonMinWidth+10" title="出租状态">
+        <div slot-scope="scope">{{getStatus(scope.status)}}</div>
+      </div>
       <div :minWidth="90" title="其他费用">
-
         <template slot-scope="scope">
           <Tooltip :content="`${scope.netFee}(网费)+${scope.manageFee}(管理费)+${scope.hotWaterFee}(热水费)+${scope.gasFee}(燃气费)`">
             {{scope.gasFee+scope.hotWaterFee+scope.manageFee+scope.netFee}} <Icon type="ios-help-circle-outline" size="14" />
           </Tooltip>
         </template>
       </div>
-      <div title="操作" v-if="!disableOperating" :width="readonly?140:90" >
+
+      <div title="操作" v-if="!disableOperating" :width="readonly?130:90" >
         <div slot-scope="scope">
           <Button type="info" size="small" @click="change(scope)" v-if="!isFirst && !readonly">首月入住</Button>
 
           <Button type="primary" size="small" @click="change(scope)" v-if="isFirst">取消</Button>
 
           <Button type="warning" size="small" @click="edit(scope)" v-if="readonly && !scope.isEdit">修改</Button>
-          <Button type="primary" size="small" @click="save(scope)" v-if="readonly && scope.isEdit">保存</Button>&nbsp;
+          <Button type="primary" size="small" @click="save(scope)" v-if="readonly && scope.isEdit">保存</Button>
           <Button type="info" size="small" @click="detail(scope)" v-if="readonly">详情</Button>
         </div>
       </div>
@@ -73,6 +76,7 @@
 import billDetail from "@/components/billDetail.vue";
 import vTable from "@/components/vTable.vue";
 import util from "@/util";
+import {RENT_STATUS} from "@/util/constant";
 export default {
   components: { vTable, billDetail },
   name: "",
@@ -93,6 +97,9 @@ export default {
     };
   },
   methods: {
+    getStatus(status){
+      return RENT_STATUS.find(i=>i.key==status).value;
+    },
     calculateElectricity(item) {
       const { elecmeterLastmonth, elecmeterThismonth } = item;
       if (
@@ -178,6 +185,9 @@ export default {
 .bill-list {
   .ivu-input-number {
     max-width: 100%;
+  }
+  .ivu-btn-small{
+    margin: 0 5px 0 0;
   }
 }
 .bg-warning {

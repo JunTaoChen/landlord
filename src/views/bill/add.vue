@@ -75,10 +75,10 @@ export default {
         })
         .then(({ code, data }) => {
           if (code == 0) {
-            if(data.length == 0){
+            if(data.rentInfoList.length == 0){
               this.$Message.warning("该房源地址暂无账单");
             }
-            this.data = data;
+            this.data = data.rentInfoList;
             this.dataFirst.length=0;
           }
         });
