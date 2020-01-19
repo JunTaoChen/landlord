@@ -30,7 +30,7 @@
         :pageSize.sync="pageSize"
         :showPage="true"
       >
-        <div key="name" title="楼名"></div>
+        <div key="name" title="房源地址"></div>
         <div key="rentedRoomNum" title="出租房间数量"></div>
         <div key="landlordName" title="房东姓名"></div>
         <div title="手机号码">

@@ -1,6 +1,6 @@
 <template>
     <div class="print">
-        <bill-detail :id="id"></bill-detail>
+        <bill-detail :data="data"></bill-detail>
         <print-button></print-button>
     </div>
     
@@ -17,11 +17,15 @@ import printButton from "@/components/printButton.vue";
         name: '',
         data() {
             return {
-                id:"",
+                data:{},
             }
         },
         created(){
-            this.id = this.$route.params.id;
+            const {id} = this.$route.params;
+            const data = sessionStorage[id];
+            if(data){
+                this.data = JSON.parse(data);
+            }
         }
     }
 </script>

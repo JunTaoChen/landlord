@@ -153,17 +153,16 @@
 import addressSelect from "@/components/addressSelect.vue";
 import roomsSelect from "@/components/roomsSelect.vue";
 import util from "@/util";
-import {CONTRACT_TYPE} from '@/util/constant.js'
+import { CONTRACT_TYPE } from "@/util/constant.js";
 //1新增 2编辑 3打印
 let status = 1;
 let rules = util.getRules();
 const HOUST_TYPE = [
   "一室一厨一卫",
-  "一室一厅一厨一卫",
-  "两室一厅一厨一卫",
-  "三室一厅一厨一卫",
-  "三室两厅一厨一卫",
-  "四室两厅一厨两卫"
+  "两室一厅一卫",
+  "三室一厅一卫",
+  "三室两厅一卫",
+  "四室两厅两卫"
 ];
 const DAYS = Array(28)
   .fill(" ")
@@ -227,9 +226,11 @@ export default {
         rentDay: util.getRequiredRuleOnChange("每月交租日不能为空")
       },
       title: "新增租约",
-      address:"",
-      room:"",
-      types:CONTRACT_TYPE
+      address: "",
+      room: "",
+      types: CONTRACT_TYPE,
+      houseTypes:HOUST_TYPE,
+      addTypeLoading:false,
     };
   },
   computed: {
@@ -238,9 +239,6 @@ export default {
     },
     disable() {
       return this.status === 3;
-    },
-    houseTypes() {
-      return HOUST_TYPE;
     },
     days() {
       return DAYS;
@@ -260,14 +258,16 @@ export default {
     }
   },
   methods: {
-    addressChange(item){
-      if(item){
+    addressChange(item) {
+      if (item) {
         this.address = item.name;
       }
-      
     },
     roomChange(item) {
-      if(item){
+      if(this.status == 1){
+        return;
+      }
+      if (item) {
         this.room = item.name;
       }
       const { roomId, buildingId } = this.data;
@@ -295,29 +295,7 @@ export default {
       if (!this.checkId()) {
         return;
       }
-      util
-        .ajax("/admin/contract/export", {
-          params: { contractId: this.data.id },
-          responseType:'blob'
-        })
-        .then(rep => {
-         const blob = new Blob([rep.data])
-        if ('download' in document.createElement('a')) { // 非IE下载
-          const elink = document.createElement('a')
-          elink.download =  `合同-${this.data.name}.xls`;
-          elink.style.display = 'none'
-          elink.href = URL.createObjectURL(blob)
-          document.body.appendChild(elink)
-          elink.click()
-          URL.revokeObjectURL(elink.href) // 释放URL 对象
-          document.body.removeChild(elink)
-        } else { // IE10+下载
-          navigator.msSaveBlob(blob, fileName)
-        }
-        });
-      // window.open(
-      //   util.baseURL + "/admin/contract/export?contractId=" + this.data.id
-      // );
+      util.exportFile("/admin/contract/export",{ contractId: this.data.id },`合同-${this.data.name}.xls`)
     },
     del() {
       if (!this.checkId()) {
@@ -336,7 +314,9 @@ export default {
       if (!this.checkId()) {
         return;
       }
-      window.open(`#/contract/print/${this.data.roomId}?address=${this.address}&room=${this.room}`);
+      window.open(
+        `#/contract/print/${this.data.roomId}?address=${this.address}&room=${this.room}`
+      );
     },
     comfirm() {
       if (this.status == 2 && !this.checkId()) {
@@ -346,7 +326,7 @@ export default {
         if (valid) {
           const data = { ...this.data };
           const { dates, firstRentDate } = data;
-          let method = "post"
+          let method = "post";
           data.checkinDate = formatDay(dates[0]);
           data.dueDate = formatDay(dates[1]);
           delete data.dates;
@@ -356,9 +336,9 @@ export default {
             delete data.roomAddress;
             delete data.img;
             delete data.attachContactList;
-            method = "put";
+            // method = "put";
           }
-          util.ajax("admin/contract", {method,data}).then(({ code }) => {
+          util.ajax("admin/contract", { method, data }).then(({ code }) => {
             if (code == 0) {
               if (this.status == 1) {
                 this.$Message.success("新增成功");

@@ -423,4 +423,28 @@ function isEmpty(obj) {
     return (typeof obj === 'undefined' || obj === null || obj === "");
 }
 util.isEmpty = isEmpty;
+
+
+util.exportFile = (url, params,name) => {
+    util.ajax(url, {
+        params,
+        responseType: "blob"
+    }).then(rep => {
+        const blob = new Blob([rep.data]);
+        if ("download" in document.createElement("a")) {
+            // 非IE下载
+            const elink = document.createElement("a");
+            elink.download = name;
+            elink.style.display = "none";
+            elink.href = URL.createObjectURL(blob);
+            document.body.appendChild(elink);
+            elink.click();
+            URL.revokeObjectURL(elink.href); // 释放URL 对象
+            document.body.removeChild(elink);
+        } else {
+            // IE10+下载
+            navigator.msSaveBlob(blob, fileName);
+        }
+    });
+}
 export default util;

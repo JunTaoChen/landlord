@@ -32,7 +32,7 @@ export const routes = [
   },
   { path: '/contract/print/:id', name: 'cPrint', component: resolve => { require(['./views/contract/print.vue'], resolve); } },
   { path: '/bill/print/:id', name: 'bPrint', component: resolve => { require(['./views/bill/print.vue'], resolve); } },
-  { path: '/bill/list/print/:id/:month', name: 'blPrint', component: resolve => { require(['./views/bill/list_print.vue'], resolve); } },
+  { path: '/bill/list/print/:id/:year/:month', name: 'blPrint', component: resolve => { require(['./views/bill/list_print.vue'], resolve); } },
   {
     path: '/login',
     name: 'login',

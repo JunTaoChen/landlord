@@ -22,20 +22,22 @@
         :total="total"
         :current.sync="curPage"
         :pageSize.sync="pageSize"
+        :showPage="true"
       >
-        <div key="addr" title="房源地址"></div>
+        <div key="name" title="房源地址"></div>
         <div key="num" title="剩余未填写数量"></div>
-        <div key="name" title="房东姓名"></div>
-        <div key="phone" title="手机号码">
+        <div key="landlordName" title="房东姓名"></div>
+        <div title="手机号码">
           <div slot-scope="scope">
-            <phone-tip :phone="scope.phone"></phone-tip>
+            <phone-tip :phone="scope.mobile"></phone-tip>
           </div>
         </div>
-        <div key="card" title="身份证号码">
+        <div title="身份证号码">
           <div slot-scope="scope">
-            <id-tip :id="scope.card"></id-tip>
+            <id-tip :id="scope.idCardNo"></id-tip>
           </div>
         </div>
+        <div key="address" title="详细地址"></div>
         <div key="cont" title="联系人"></div>
       </v-table>
     </Card>
@@ -52,6 +54,7 @@ export default {
   name: "build_list_bill",
   data() {
     return {
+      url: "admin/building/page",
       searchData: {
         date: new Date(),
         status: 1
@@ -59,16 +62,7 @@ export default {
     };
   },
   mounted() {
-    this.data = [
-      {
-        name: "张鑫",
-        num: "1",
-        card: "450203198605050730",
-        addr: "福田区下沙村8坊70号",
-        phone: "18888888888",
-        cont: "张琪(189999999999)"
-      }
-    ];
+    this.changePage(1);
   },
 };
 </script>
