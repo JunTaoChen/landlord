@@ -3,15 +3,10 @@
     <search-card>
       <Form :label-width="150" class="block" @submit.native.prevent>
         <FormItem label="地址：">
-          <address-select v-model="searchData.aid" @change="addressChange"></address-select>
+          <address-select v-model="searchData.buildingId" @change="addressChange"></address-select>
         </FormItem>
         <FormItem label="日期：">
-          <DatePicker
-            type="month"
-            v-model="searchData.date"
-            @on-change="getData"
-            :clearable="false"
-          ></DatePicker>
+          <DatePicker type="month" v-model="searchData.date" @on-change="getData" :clearable="false"></DatePicker>
         </FormItem>
       </Form>
     </search-card>
@@ -45,7 +40,7 @@ export default {
   data() {
     return {
       searchData: {
-        aid: "",
+        buildingId: "",
         date: new Date()
       },
       data: [],
@@ -58,28 +53,35 @@ export default {
     }
   },
   methods: {
+    checkBuildingId() {
+      if (this.searchData.buildingId) {
+        return true;
+      }
+      this.$Message.warning("请先选择地址");
+      return false;
+    },
     addressChange(item) {
       if (item) {
         this.getData();
       }
     },
     getData() {
-      const { aid, date } = this.searchData;
+      const { buildingId, date } = this.searchData;
       util
         .ajax("/admin/rentinfo/list", {
           params: {
-            buildingId: this.searchData.aid,
+            buildingId: this.searchData.buildingId,
             year: date.getFullYear(),
-            month: date.getMonth() + 1,
+            month: date.getMonth() + 1
           }
         })
         .then(({ code, data }) => {
           if (code == 0) {
-            if(data.rentInfoList.length == 0){
+            if (data.rentInfoList.length == 0) {
               this.$Message.warning("该房源地址暂无账单");
             }
             this.data = data.rentInfoList;
-            this.dataFirst.length=0;
+            this.dataFirst = [];
           }
         });
     },
@@ -101,8 +103,38 @@ export default {
       const index = item._index;
       this.dataFirst[index] = { ...item, isSave: false };
     },
-    saveAll() {},
-    saveAllFirstData() {}
+    save(data, isCalc) {
+      if (!this.checkBuildingId()) {
+        return;
+      }
+      if (data.length == 0) {
+        this.$Message.warning("暂无可保存的数据");
+        return;
+      }
+      data = data.map(item => {
+        const temp = util.getRentInfo(item);
+        isCalc ? (temp.rentFee = util.getRentFee(item)) : "";
+        return temp;
+      });
+      console.log(data);
+      this.$Modal.confirm({
+        title: "提示",
+        content: "是否保存所有数据?",
+        onOk: () => {
+          util.ajax.post("admin/rentinfo/batch", data).then(({ code }) => {
+            if (code == 0) {
+              this.$Message.success("保存成功");
+            }
+          });
+        }
+      });
+    },
+    saveAll() {
+      this.save(this.data, true);
+    },
+    saveAllFirstData() {
+      this.save(this.dataFirst);
+    }
   }
 };
 </script>

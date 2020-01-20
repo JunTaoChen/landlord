@@ -65,24 +65,26 @@ export default {
         return;
       }
       const { buildingId, date } = this.searchData;
-      const {comment,id} = this.comment;
+      const { comment, id } = this.comment;
       let method = "POST";
-      const data = {comment};
-      if(id){
-        method="PUT";
-        data.rentCommentId  = id;
-      }else{
+      const data = { comment };
+      let url = "/rent/comment";
+      if (id) {
+        url = "/rent/comment/edit";
+        method = "PUT";
+        data.rentCommentId = id;
+      } else {
         data.buildingId = buildingId;
-        data.date = util.formatTime(date,"YYYY-MM-01")
+        data.date = util.formatTime(date, "YYYY-MM-01");
       }
-      util.ajax("/rent/comment",{method,data}).then(({code,data})=>{
-        if(code == 0){
+      util.ajax(url, { method, data }).then(({ code, data }) => {
+        if (code == 0) {
           this.$Message.success("添加备注成功");
-          if(!id){
+          if (!id) {
             this.comment.id = data.id;
           }
         }
-      })
+      });
     },
     addressChange(item) {
       if (item) {
@@ -153,7 +155,14 @@ export default {
       item.isEdit = true;
     },
     save(item) {
-      item.isEdit = false;
+      const temp = util.getRentInfo(item);
+      temp.rentFee = util.getRentFee(item);
+      util.ajax.put("/admin/rentinfo", temp).then(({ code }) => {
+        if (code == 0) {
+          this.$Message.success("保存成功");
+          item.isEdit = false;
+        }
+      });
     },
     checkBuildingId() {
       if (this.searchData.buildingId) {

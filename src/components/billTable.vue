@@ -4,7 +4,7 @@
       <div :minWidth="commonMinWidth" key="roomNo" title="房号"></div>
       <div title="总费用" :minWidth="80">
         <div slot-scope="scope">
-          <span v-if="!isFirst">{{scope.baseRent+scope.practicalElecmeter*scope.elecFee+scope.practicalWatermeter*scope.waterFee+scope.gasFee+scope.hotWaterFee+scope.manageFee+scope.netFee}}</span>
+          <span v-if="!isFirst">{{getRentFee(scope)}}</span>
           <InputNumber :min="0" v-else v-model="scope.rentFee"></InputNumber>
         </div>
       </div>
@@ -44,7 +44,7 @@
       </div>
       <div :minWidth="90" title="其他费用">
         <template slot-scope="scope">
-          <Tooltip :content="`${scope.netFee}(网费)+${scope.manageFee}(管理费)+${scope.hotWaterFee}(热水费)+${scope.gasFee}(燃气费)`">
+          <Tooltip transfer :content="`${scope.netFee}(网费)+${scope.manageFee}(管理费)+${scope.hotWaterFee}(热水费)+${scope.gasFee}(燃气费)`">
             {{scope.gasFee+scope.hotWaterFee+scope.manageFee+scope.netFee}} <Icon type="ios-help-circle-outline" size="14" />
           </Tooltip>
         </template>
@@ -97,6 +97,7 @@ export default {
     };
   },
   methods: {
+    getRentFee:util.getRentFee,
     getStatus(status){
       return RENT_STATUS.find(i=>i.key==status).value;
     },

@@ -425,7 +425,7 @@ function isEmpty(obj) {
 util.isEmpty = isEmpty;
 
 
-util.exportFile = (url, params,name) => {
+util.exportFile = (url, params, name) => {
     util.ajax(url, {
         params,
         responseType: "blob"
@@ -446,5 +446,53 @@ util.exportFile = (url, params,name) => {
             navigator.msSaveBlob(blob, fileName);
         }
     });
+}
+
+util.getRentFee = rent => {
+    return rent.baseRent + rent.practicalElecmeter * rent.elecFee + rent.practicalWatermeter * rent.waterFee + rent.gasFee + rent.hotWaterFee + rent.manageFee + rent.netFee;
+}
+util.getRentInfo = rent => {
+    const {
+        baseRent,
+        deposit,
+        elecFee,
+        elecmeterLastmonth,
+        elecmeterThismonth,
+        gasFee,
+        hotWaterFee,
+        id,
+        manageFee,
+        netFee,
+        practicalElecmeter,
+        practicalWatermeter,
+        remainDays,
+        rentDate,
+        rentFee,
+        // roomId,
+        waterFee,
+        watermeterLastmonth,
+        watermeterThismonth
+    } = rent;
+    return {
+        baseRent,
+        deposit,
+        elecFee,
+        elecmeterLastmonth,
+        elecmeterThismonth,
+        gasFee,
+        hotWaterFee,
+        id,
+        manageFee,
+        netFee,
+        practicalElecmeter,
+        practicalWatermeter,
+        remainDays,
+        rentDate,
+        rentFee,
+        // roomId,
+        waterFee,
+        watermeterLastmonth,
+        watermeterThismonth
+    };
 }
 export default util;

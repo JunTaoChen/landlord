@@ -44,13 +44,13 @@
           </div>
         </div>
         <div key="address" title="详细地址"></div>
-        <div key="cont" title="联系人"></div>
+        <!-- <div key="cont" title="联系人"></div> -->
         <div title="操作" :width="250">
           <div slot-scope="scope">
             <!-- <Button type="warning" size="small" @click="edit(scope)" >编辑</Button>
             <Button type="error" size="small" @click="del(scope)">删除</Button>-->
             <Button type="warning" size="small" @click="viewHouse(scope)">查看房屋</Button>
-            <Button type="info" size="small" @click="edit(scope)">编辑联系人</Button>
+            <!-- <Button type="info" size="small" @click="edit(scope)">编辑联系人</Button> -->
           </div>
         </div>
       </v-table>
