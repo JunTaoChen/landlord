@@ -1,7 +1,7 @@
 <template>
   <div class="bill_print">
     <div class="v_print">
-      <bill-table :data="data" :readonly="true" :disableOperating="true" :loading="loading" :common-min-width="65"></bill-table>
+      <bill-table :data="data" :readonly="true" :disableOperating="true" :loading="loading" :common-min-width="60"></bill-table>
     </div>
     <print-button class="bill_print_button"></print-button>
   </div>
@@ -35,10 +35,10 @@ export default {
           this.loading = false;
         });
         if (code == 0) {
-          if (data.length == 0) {
+          if (data.rentInfoList.length == 0) {
             this.$Message.warning("该房源地址暂无账单");
           }
-          this.data = data;
+          this.data = data.rentInfoList;
         }
       });
   }
