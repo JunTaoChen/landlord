@@ -39,7 +39,7 @@ export default {
                             this.data = this.beforeDataChange(data);
                         } else {
                             this.total = data.total;
-                            this.data = this.beforeDataChange(data.records);
+                            this.data = this.beforeDataChange(data).records;
                         }
 
                         // this.total = data.total;
