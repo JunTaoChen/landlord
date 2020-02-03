@@ -38,7 +38,7 @@
           </div>
         </div>
         <div key="address" title="详细地址"></div>
-        <div key="cont" title="联系人"></div>
+        <!-- <div key="cont" title="联系人"></div> -->
       </v-table>
     </Card>
   </div>

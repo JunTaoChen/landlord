@@ -65,7 +65,7 @@
         <div title="操作" :width="200">
           <div slot-scope="scope">
             <Button type="warning" size="small" @click="edit(scope)">编辑房间名</Button>
-            <Button v-if="searchData.status == 2" type="info" size="small" @click="toBill(scope)">查看账单</Button>
+            <Button v-if="searchData.status == 2" type="info" size="small" @click="billDetail(scope)">查看账单</Button>
           </div>
         </div>
       </v-table>
@@ -83,6 +83,23 @@
         <Button @click="comfirmRoom" type="primary">确定</Button>
       </div>
     </Modal>
+
+    <Modal v-model="detailModal.visible" title="账单详情" :width="660">
+      <Row>
+        <Col span="24">
+        <Form :label-width="120">
+          <FormItem label="账单日期：">
+            <DatePicker type="month" v-model="detailModal.date" :clearable="false" @on-change="getBillDetail"></DatePicker>
+          </FormItem>
+        </Form>
+
+        </Col>
+      </Row>
+      <bill-detail :data="detailModal.data"></bill-detail>
+      <div slot="footer">
+        <Button type="text" size="large" @click="detailModal.visible=false">关闭</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -90,12 +107,14 @@ import util from "@/util";
 import tableMixin from "@/mixin/table.js";
 import rentalStatistics from "@/components/rentalStatistics";
 import addressSelect from "@/components/addressSelect.vue";
+import billDetail from "@/components/billDetail.vue";
 let roomIndex;
 export default {
   mixins: [tableMixin],
   components: {
     rentalStatistics,
-    addressSelect
+    addressSelect,
+    billDetail
   },
   data() {
     return {
@@ -112,18 +131,27 @@ export default {
         },
         rules: { name: util.getRequiredRule("房间名称不能为空") }
       },
-      landlord:{},
-      manager:{},
+      landlord: {},
+      manager: {},
+      detailModal: {
+        visible: false,
+        data: {},
+        date: new Date(),
+        id:"",
+      }
     };
   },
   methods: {
-    beforeDataChange(data){
-      const {landlord,manager} = data;
+    beforeDataChange(data) {
+      const { landlord, manager } = data;
       this.landlord = landlord || {};
       this.manager = manager || {};
       return data;
     },
-    toBill(data) {},
+    billDetail(data) {
+      this.detailModal.id = data.id;
+      this.getBillDetail();
+    },
     edit(item) {
       this.modal.data.id = item.id;
       this.modal.data.name = item.name;
@@ -141,6 +169,26 @@ export default {
           });
         }
       });
+    },
+    getBillDetail() {
+      const {date,id} = this.detailModal;
+      util.ajax("admin/rentinfo",{
+        params:{
+          month:date.getMonth()+1,
+          year:date.getFullYear(),
+          roomId:id,
+        }
+      }).then(({data,code})=>{
+        if(code == 0){
+          if(data){
+            this.detailModal.data = data;
+            this.detailModal.visible = true;
+          }else{
+            this.$Message.warning("该房间暂无账单信息")
+          }
+          
+        }
+      })
     }
   },
   activated() {
