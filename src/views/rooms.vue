@@ -184,7 +184,8 @@ export default {
             this.detailModal.data = data;
             this.detailModal.visible = true;
           }else{
-            this.$Message.warning("该房间暂无账单信息")
+            this.$Message.warning("暂无账单信息");
+            this.detailModal.data = {};
           }
           
         }
