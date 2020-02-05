@@ -67,20 +67,18 @@ export default {
     },
     getData() {
       const { buildingId, date } = this.searchData;
-      util
-        .ajax("/admin/rentinfo/list", {
-          params: {
-            buildingId: this.searchData.buildingId,
-            year: date.getFullYear(),
-            month: date.getMonth() + 1
-          }
+      util.ajax
+        .post("admin/room/rentNoFilled/list", {
+          buildingId: this.searchData.buildingId,
+          year: date.getFullYear(),
+          month: date.getMonth() + 1
         })
         .then(({ code, data }) => {
           if (code == 0) {
-            if (data.rentInfoList.length == 0) {
+            if (data.length == 0) {
               this.$Message.warning("该房源地址暂无账单");
             }
-            this.data = data.rentInfoList;
+            this.data = data;
             this.dataFirst = [];
           }
         });

@@ -2,14 +2,14 @@
   <div>
     <search-card>
       <Form :label-width="150" class="block" @submit.native.prevent>
-        <FormItem label="填写状态：">
+        <!-- <FormItem label="填写状态：">
           <RadioGroup v-model="searchData.status">
             <Radio :label="1">已填写</Radio>
             <Radio :label="2">未填写</Radio>
           </RadioGroup>
-        </FormItem>
+        </FormItem> -->
         <FormItem label="日期：">
-          <DatePicker type="month" v-model="searchData.date" :clearable="false"></DatePicker>
+          <DatePicker type="month" v-model="date" :clearable="false" @on-change="dateChange"></DatePicker>
         </FormItem>
       </Form>
     </search-card>
@@ -25,7 +25,8 @@
         :showPage="true"
       >
         <div key="name" title="房源地址"></div>
-        <div key="num" title="剩余未填写数量"></div>
+        <div key="unFilledNum" title="未填写数量"></div>
+        <div key="filledNum" title="已填写数量"></div>
         <div key="landlordName" title="房东姓名"></div>
         <div title="手机号码">
           <div slot-scope="scope">
@@ -54,16 +55,21 @@ export default {
   name: "build_list_bill",
   data() {
     return {
-      url: "admin/building/page",
-      searchData: {
-        date: new Date(),
-        status: 1
-      },
+      url: "admin/rent/building/page",
+      date: new Date(),
     };
   },
   mounted() {
-    this.changePage(1);
+    this.dateChange();
   },
+  methods:{
+    dateChange(){
+      const date = this.date;
+      this.searchData.year = date.getFullYear();
+      this.searchData.month = date.getMonth()+1;
+      this.search();
+    }
+  }
 };
 </script>
 
