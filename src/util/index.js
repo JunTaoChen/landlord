@@ -468,7 +468,7 @@ util.getRentInfo = rent => {
         remainDays,
         rentDate,
         rentFee,
-        // roomId,
+        roomId,
         waterFee,
         watermeterLastmonth,
         watermeterThismonth
@@ -489,7 +489,7 @@ util.getRentInfo = rent => {
         remainDays,
         rentDate,
         rentFee,
-        // roomId,
+        roomId,
         waterFee,
         watermeterLastmonth,
         watermeterThismonth

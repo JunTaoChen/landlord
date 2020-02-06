@@ -76,9 +76,15 @@ export default {
         .then(({ code, data }) => {
           if (code == 0) {
             if (data.length == 0) {
-              this.$Message.warning("该房源地址暂无账单");
+              this.$Message.warning({content:"该房源此月份暂无需要添加的账单",duration: 3});
             }
-            this.data = data;
+            this.data = data.map(item=>{
+              item.elecmeterThismonth = item.elecmeterLastmonth;
+              item.watermeterThismonth = item.watermeterLastmonth;
+              item.practicalElecmeter = 0;
+              item.practicalWatermeter = 0;
+              return item;
+            });
             this.dataFirst = [];
           }
         });

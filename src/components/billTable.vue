@@ -44,7 +44,7 @@
       </div>
       <div :minWidth="90" title="其他费用">
         <template slot-scope="scope">
-          <Tooltip transfer :content="`${scope.netFee}(网费)+${scope.manageFee}(管理费)+${scope.hotWaterFee}(热水费)+${scope.gasFee}(燃气费)`">
+          <Tooltip transfer :content="`${scope.netFee}(网费)+${scope.manageFee}(管理费)+${scope.hotWaterFee}(热水费)+${scope.gasFee}(燃气费)`" :max-width="300">
             {{scope.gasFee+scope.hotWaterFee+scope.manageFee+scope.netFee}} <Icon type="ios-help-circle-outline" size="14" />
           </Tooltip>
         </template>
