@@ -76,8 +76,9 @@ export default {
   computed: {
     //0和2：未交租，1，已交租，3账单未填写，4：待确认
     status() {
-      if (this.data.status) {
-        return RENT_STATUS.find(item => item.key == this.data.status).value;
+      const {status} = this.data;
+      if (status != undefined) {
+        return RENT_STATUS.find(item => item.key == status).value;
       }
       return "";
     }

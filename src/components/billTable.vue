@@ -4,8 +4,8 @@
       <div :minWidth="commonMinWidth" key="roomNo" title="房号"></div>
       <div title="总费用" :minWidth="80">
         <div slot-scope="scope">
-          <span v-if="!isFirst">{{getRentFee(scope)}}</span>
-          <InputNumber :min="0" v-else v-model="scope.rentFee"></InputNumber>
+          <span v-if="!isFirst">{{scope.rentFee}}</span>
+          <InputNumber :min="0" v-else v-model="scope.rentFee" @on-change="rentFeeChange(scope)"></InputNumber>
         </div>
       </div>
       <div :minWidth="commonMinWidth" key="baseRent" title="租金"></div>
@@ -111,6 +111,7 @@ export default {
       }
       item.practicalElecmeter = elecmeterThismonth - elecmeterLastmonth;
       item.electricityWarning = false;
+      item.rentFee =util.getRentFee(item);
       this.update(item);
     },
     verificationElectricity(item) {
@@ -124,6 +125,7 @@ export default {
       } else {
         item.electricityWarning = false;
       }
+      item.rentFee =util.getRentFee(item);
       this.update(item);
     },
     calculateWaterFee(item) {
@@ -136,6 +138,7 @@ export default {
       }
       item.practicalWatermeter = watermeterThismonth - watermeterLastmonth;
       item.waterFeeWarming = false;
+      item.rentFee =util.getRentFee(item);
       this.update(item);
     },
     verificationWaterFee(item) {
@@ -149,6 +152,7 @@ export default {
       } else {
         item.waterFeeWarming = false;
       }
+      item.rentFee =util.getRentFee(item);
       this.update(item);
     },
     rowClassName(row, index) {
@@ -177,6 +181,9 @@ export default {
     print() {
       sessionStorage[this.modal.data.id] = JSON.stringify(this.modal.data);
       window.open("#/bill/print/"+this.modal.data.id);
+    },
+    rentFeeChange(item){
+      this.update(item);
     }
   }
 };

@@ -83,6 +83,7 @@ export default {
               item.watermeterThismonth = item.watermeterLastmonth;
               item.practicalElecmeter = 0;
               item.practicalWatermeter = 0;
+              item.rentFee = util.getRentFee(item)
               return item;
             });
             this.dataFirst = [];
@@ -91,12 +92,11 @@ export default {
     },
     change(index) {
       let item = this.data.splice(index, 1)[0];
-      item.p10 = item.p1 + item.p4 * item.p5 + item.p8 * item.p9;
+      item.rentFee = util.getRentFee(item)
       this.dataFirst.push(item);
     },
     cannal(index) {
       let item = this.dataFirst.splice(index, 1)[0];
-      item.p10 = item.p1 + item.p4 * item.p5 + item.p8 * item.p9;
       this.data.push(item);
     },
     dataUpdata(item) {
@@ -107,7 +107,7 @@ export default {
       const index = item._index;
       this.dataFirst[index] = { ...item, isSave: false };
     },
-    save(data, isCalc) {
+    save(data, isCalc,successCallback) {
       if (!this.checkBuildingId()) {
         return;
       }
@@ -118,9 +118,9 @@ export default {
       data = data.map(item => {
         const temp = util.getRentInfo(item);
         isCalc ? (temp.rentFee = util.getRentFee(item)) : "";
+        temp.rentDate = util.formatTime(this.searchData.date,"YYYY-MM-01")
         return temp;
       });
-      console.log(data);
       this.$Modal.confirm({
         title: "提示",
         content: "是否保存所有数据?",
@@ -128,16 +128,21 @@ export default {
           util.ajax.post("admin/rentinfo/batch", data).then(({ code }) => {
             if (code == 0) {
               this.$Message.success("保存成功");
+              successCallback?successCallback():"";
             }
           });
         }
       });
     },
     saveAll() {
-      this.save(this.data, true);
+      this.save(this.data, true,()=>{
+        this.data = [];
+      });
     },
     saveAllFirstData() {
-      this.save(this.dataFirst);
+      this.save(this.dataFirst,false,()=>{
+        this.dataFirst = [];
+      });
     }
   }
 };
